@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Video Harness · 项目总览</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --surface-warm: var(--surface);
+      --fg: #111111;
+      --fg-2: var(--fg);
+      --muted: #6b6b6b;
+      --meta: var(--muted);
+      --border: #e5e5e5;
+      --border-soft: var(--border);
+      --accent: #2f6feb;
+      --accent-on: #ffffff;
+      --accent-hover: color-mix(in oklab, var(--accent), black 8%);
+      --accent-active: color-mix(in oklab, var(--accent), black 14%);
+      --success: #17a34a;
+      --warn: #eab308;
+      --danger: #dc2626;
+      --font-display: "Inter", -apple-system, system-ui, sans-serif;
+      --font-body: "Inter", -apple-system, system-ui, sans-serif;
+      --font-mono: ui-monospace, "JetBrains Mono", monospace;
+      --text-xs: 12px;
+      --text-sm: 14px;
+      --text-base: 16px;
+      --text-lg: 20px;
+      --text-xl: 24px;
+      --text-2xl: 32px;
+      --text-3xl: 48px;
+      --text-4xl: 64px;
+      --leading-body: 1.5;
+      --leading-tight: 1.2;
+      --tracking-display: -0.01em;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-12: 48px;
+      --space-20: 80px;
+      --section-y-desktop: 80px;
+      --section-y-tablet: 48px;
+      --section-y-phone: 32px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-pill: 9999px;
+      --elev-flat: none;
+      --elev-ring: 0 0 0 1px var(--border);
+      --elev-raised: 0 2px 8px color-mix(in oklab, var(--fg), transparent 92%);
+      --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent), transparent 70%);
+      --motion-fast: 150ms;
+      --motion-base: 200ms;
+      --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+      --container-max: 1200px;
+      --container-gutter-desktop: 24px;
+      --container-gutter-tablet: 16px;
+      --container-gutter-phone: 12px;
+    }
+  </style>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%}
+    body{margin:0;min-width:320px;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:var(--text-base);line-height:var(--leading-body);text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+    button{font:inherit;color:inherit;cursor:pointer}a{color:inherit;text-decoration:none}svg,img,video{display:block;max-width:100%}h1,h2,h3,p{margin:0}h1,h2,h3{font-family:var(--font-display);line-height:var(--leading-tight);text-wrap:balance}p{text-wrap:pretty}[hidden]{display:none!important}
+    .container{width:min(100%,var(--container-max));margin-inline:auto;padding-inline:var(--container-gutter-desktop)}
+    .topnav{position:sticky;top:0;z-index:30;background:color-mix(in oklab,var(--bg),transparent 6%);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+    .topnav-inner{min-height:64px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--space-8)}
+    .brand{display:inline-flex;align-items:center;gap:var(--space-3);font-weight:600;letter-spacing:var(--tracking-display)}
+    .brand-mark{width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--fg);border-radius:var(--radius-sm)}.brand-mark svg{width:16px;height:16px}
+    .primary-nav{height:64px;display:flex;gap:var(--space-6)}.primary-nav a{position:relative;display:inline-flex;align-items:center;color:var(--muted);font-size:var(--text-sm);transition:color var(--motion-fast) var(--ease-standard)}.primary-nav a:hover,.primary-nav a[aria-current=page]{color:var(--fg)}.primary-nav a[aria-current=page]{font-weight:600}.primary-nav a[aria-current=page]::after{content:"";position:absolute;inset:auto 0 -1px;height:2px;background:var(--fg)}
+    .nav-actions,.row{display:flex;align-items:center;gap:var(--space-2)}
+    .btn{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);padding:10px 16px;border:1px solid transparent;border-radius:var(--radius-sm);background:transparent;font-size:var(--text-sm);font-weight:600;transition:transform var(--motion-fast) var(--ease-standard),background var(--motion-fast) var(--ease-standard),border-color var(--motion-fast) var(--ease-standard)}.btn:hover{transform:translateY(-1px)}.btn:active{transform:translateY(0) scale(.98)}.btn-primary{background:var(--accent);color:var(--accent-on)}.btn-primary:hover{background:var(--accent-hover)}.btn-secondary{border-color:var(--border);background:var(--surface)}.btn-secondary:hover{border-color:var(--fg)}.btn-ghost{padding-inline:10px;color:var(--muted)}.btn-ghost:hover{color:var(--fg);background:color-mix(in oklab,var(--fg),transparent 96%)}.btn svg{width:18px;height:18px}
+    .icon-btn{width:40px;height:40px;display:grid;place-items:center;border:1px solid transparent;border-radius:var(--radius-sm);background:transparent;transition:background var(--motion-fast) var(--ease-standard)}.icon-btn:hover{background:color-mix(in oklab,var(--fg),transparent 95%)}.icon-btn svg{width:18px;height:18px}
+    .btn:focus-visible,.icon-btn:focus-visible,.stage:focus-visible,summary:focus-visible,.project-row:focus-visible{outline:0;box-shadow:var(--focus-ring)}
+    .page-header{padding-block:var(--space-8) var(--space-6);display:flex;align-items:end;justify-content:space-between;gap:var(--space-6)}.eyebrow{margin-bottom:var(--space-2);color:var(--muted);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:.06em}.page-header h1{font-size:var(--text-2xl);letter-spacing:var(--tracking-display)}.page-meta{margin-top:var(--space-2);color:var(--muted);font-size:var(--text-sm)}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md)}.project-card{overflow:clip}
+    .project-identity{min-height:240px;display:grid;grid-template-columns:180px minmax(0,1fr);gap:var(--space-8);padding:var(--space-6);border-bottom:1px solid var(--border)}
+    .cover{position:relative;overflow:hidden;min-height:192px;padding:0;border:0;border-radius:var(--radius-sm);background:var(--fg)}.cover img{width:100%;height:100%;object-fit:cover;transition:transform 600ms var(--ease-standard)}.cover:hover img{transform:scale(1.035)}.cover::after{content:"";position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(to top,color-mix(in oklab,var(--fg),transparent 15%),transparent);pointer-events:none}.cover-badge{position:absolute;left:var(--space-3);bottom:var(--space-3);z-index:1;display:inline-flex;align-items:center;gap:var(--space-2);color:var(--surface);font-family:var(--font-mono);font-size:var(--text-xs)}.cover-badge svg{width:14px;height:14px}
+    .identity-main{min-width:0;display:flex;flex-direction:column;justify-content:space-between}.identity-top{display:flex;justify-content:space-between;gap:var(--space-4)}.project-title{font-size:var(--text-xl);letter-spacing:var(--tracking-display)}.project-description{margin-top:var(--space-3);max-width:62ch;color:var(--muted);font-size:var(--text-sm)}.meta-row{margin-top:var(--space-5);display:flex;flex-wrap:wrap;gap:var(--space-2)}
+    .tag,.status-label{display:inline-flex;align-items:center;gap:var(--space-2);padding:4px 9px;border:1px solid var(--border);border-radius:var(--radius-pill);color:var(--muted);font-size:var(--text-xs);white-space:nowrap}.status-label{color:var(--success);border-color:color-mix(in oklab,var(--success),transparent 72%)}.status-label svg{width:13px;height:13px}.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+    .identity-footer{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding-top:var(--space-4)}.muted{color:var(--muted);font-size:var(--text-sm)}
+    .workspace-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:var(--space-6);padding:var(--space-6);align-items:start}.main-column{min-width:0;display:grid;gap:var(--space-6)}
+    .action-card{position:relative;overflow:hidden;min-height:184px;display:grid;grid-template-columns:1fr auto;align-items:end;gap:var(--space-8);padding:var(--space-6);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface)}.action-card::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--accent);transform:scaleY(0);transform-origin:bottom;animation:reveal-line 700ms var(--ease-standard) 120ms forwards}.action-kicker{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-5);color:var(--muted);font-size:var(--text-sm);font-weight:600}.action-kicker svg{width:17px;height:17px;color:var(--success)}.action-card h2{max-width:16ch;font-size:var(--text-2xl);letter-spacing:var(--tracking-display)}.action-copy{margin-top:var(--space-3);color:var(--muted);font-size:var(--text-sm)}
+    .panel{padding:var(--space-6)}.panel-header{display:flex;align-items:start;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-6)}.panel-header h2{font-size:var(--text-lg)}.panel-header p{margin-top:var(--space-1);color:var(--muted);font-size:var(--text-sm)}
+    .progress-track{position:relative;display:grid;grid-template-columns:repeat(6,minmax(92px,1fr));gap:var(--space-3)}.progress-track::before,.progress-track::after{content:"";position:absolute;left:calc(100% / 12);right:calc(100% / 12);top:17px;height:1px;background:var(--border)}.progress-track::after{background:var(--success);transform:scaleX(0);transform-origin:left;animation:progress-in 900ms var(--ease-standard) 180ms forwards}
+    .stage{position:relative;z-index:1;display:grid;justify-items:center;gap:var(--space-2);padding:0 var(--space-1) var(--space-3);border:0;border-radius:var(--radius-sm);background:transparent;text-align:center;transition:background var(--motion-fast) var(--ease-standard),transform var(--motion-fast) var(--ease-standard)}.stage:hover{background:color-mix(in oklab,var(--fg),transparent 96%);transform:translateY(-2px)}.stage-dot{width:35px;height:35px;display:grid;place-items:center;border:1px solid color-mix(in oklab,var(--success),transparent 65%);border-radius:var(--radius-pill);background:var(--surface);color:var(--success)}.stage-dot svg{width:17px;height:17px}.stage-name{font-size:var(--text-xs);font-weight:600;line-height:1.35}.stage-state{color:var(--muted);font-size:11px}.approval-marker{min-height:19px;display:inline-flex;align-items:center;gap:var(--space-1);color:var(--muted);font-family:var(--font-mono);font-size:10px}.approval-marker svg{width:12px;height:12px}
+    .task-sidebar{display:grid;gap:var(--space-4)}.task-group{overflow:clip}.task-group summary{list-style:none;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--space-3);padding:var(--space-4);cursor:pointer;user-select:none}.task-group summary::-webkit-details-marker{display:none}.task-icon{width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--muted)}.task-icon svg{width:16px;height:16px}.task-title{display:block;font-size:var(--text-sm);font-weight:600}.task-subtitle{display:block;color:var(--muted);font-size:var(--text-xs)}.count{min-width:22px;height:22px;display:grid;place-items:center;border:1px solid var(--border);border-radius:var(--radius-pill);color:var(--muted);font-family:var(--font-mono);font-size:var(--text-xs)}.task-empty{padding:0 var(--space-4) var(--space-4) 60px;color:var(--muted);font-size:var(--text-xs)}
+    .approval-list{padding:var(--space-5)}.approval-list h3{margin-bottom:var(--space-4);font-size:var(--text-sm)}.approval-row{display:grid;grid-template-columns:20px 1fr;gap:var(--space-3);padding-block:var(--space-3);border-top:1px solid var(--border-soft)}.approval-row svg{width:16px;height:16px;color:var(--success);margin-top:2px}.approval-row strong{display:block;font-size:var(--text-sm)}.approval-row span{color:var(--muted);font-size:var(--text-xs)}
+    .other-projects{margin-block:var(--space-6) var(--space-20)}.project-row{width:100%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--space-4);padding:var(--space-4) var(--space-5);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface);text-align:left}.project-row:hover{border-color:color-mix(in oklab,var(--fg),transparent 65%)}.project-row svg{width:18px;height:18px;color:var(--muted)}.project-row strong{display:block;font-size:var(--text-sm)}.project-row span{color:var(--muted);font-size:var(--text-xs)}
+    .menu-wrap{position:relative}.menu{position:absolute;top:calc(100% + var(--space-2));right:0;z-index:20;width:220px;padding:var(--space-2);border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);box-shadow:var(--elev-raised)}.menu button{width:100%;min-height:38px;display:flex;align-items:center;gap:var(--space-3);padding:8px 10px;border:0;border-radius:var(--radius-sm);background:transparent;text-align:left;font-size:var(--text-sm)}.menu button:hover{background:color-mix(in oklab,var(--fg),transparent 96%)}.menu button svg{width:17px;height:17px;color:var(--muted)}
+    .dialog{width:min(92vw,880px);max-height:90vh;padding:0;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface);color:var(--fg);box-shadow:var(--elev-raised)}.dialog::backdrop{background:color-mix(in oklab,var(--fg),transparent 55%);backdrop-filter:blur(4px)}.dialog-header{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--border)}.dialog-header h2{font-size:var(--text-lg)}.video-frame{padding:var(--space-5);background:var(--fg)}.video-frame video{width:100%;max-height:68vh;background:var(--fg)}.stage-dialog-body{padding:var(--space-5)}.stage-dialog-body p{color:var(--muted);font-size:var(--text-sm)}.tech-list{margin:var(--space-5) 0;border-top:1px solid var(--border)}.tech-row{display:grid;grid-template-columns:1fr auto;gap:var(--space-4);padding-block:var(--space-3);border-bottom:1px solid var(--border);font-size:var(--text-sm)}.tech-row span:last-child{color:var(--success);font-family:var(--font-mono);font-size:var(--text-xs)}.dialog-actions{display:flex;justify-content:flex-end;gap:var(--space-2)}
+    .toast{position:fixed;right:var(--space-6);bottom:var(--space-6);z-index:50;max-width:360px;display:flex;align-items:start;gap:var(--space-3);padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);box-shadow:var(--elev-raised);transform:translateY(16px);opacity:0;pointer-events:none;transition:opacity var(--motion-base) var(--ease-standard),transform var(--motion-base) var(--ease-standard)}.toast.show{transform:translateY(0);opacity:1}.toast svg{width:18px;height:18px;color:var(--success);margin-top:2px}.toast strong{display:block;font-size:var(--text-sm)}.toast span{display:block;margin-top:2px;color:var(--muted);font-size:var(--text-xs)}
+    @keyframes reveal-line{to{transform:scaleY(1)}}@keyframes progress-in{to{transform:scaleX(1)}}
+    @media(max-width:1020px){.container{padding-inline:var(--container-gutter-tablet)}.workspace-grid{grid-template-columns:1fr}.task-sidebar{grid-template-columns:repeat(3,1fr)}.approval-list{grid-column:1/-1}.progress-track{grid-template-columns:repeat(3,1fr);row-gap:var(--space-5)}.progress-track::before,.progress-track::after{display:none}}
+    @media(max-width:720px){.container{padding-inline:var(--container-gutter-phone)}.topnav-inner{grid-template-columns:1fr auto}.primary-nav{display:none}.nav-actions .btn{display:none}.project-identity{grid-template-columns:112px minmax(0,1fr);gap:var(--space-4);padding:var(--space-4)}.cover{min-height:156px}.identity-top{display:block}.project-title{padding-right:var(--space-8);font-size:var(--text-lg)}.identity-footer{align-items:start;flex-direction:column}.workspace-grid{padding:var(--space-4)}.action-card{grid-template-columns:1fr;min-height:auto}.action-card h2{font-size:var(--text-xl)}.progress-track{grid-template-columns:repeat(2,1fr)}.task-sidebar{grid-template-columns:1fr}.approval-list{grid-column:auto}.toast{right:var(--space-3);bottom:var(--space-3);left:var(--space-3)}}
+    @media(max-width:470px){.page-header{display:block}.project-identity{grid-template-columns:88px minmax(0,1fr)}.cover{min-height:128px}.meta-row .tag:nth-child(n+3){display:none}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+  </style>
+  <link rel="stylesheet" href="assets/workbench.css" />
+</head>
+<body data-page="overview">
+  <header class="app-topbar" data-od-id="topnav">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="Video Harness 项目总览"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 5.5v13M17 5.5v13M7 12h10"/><path d="m10 8 4 4-4 4"/></svg></span><span>Video Harness</span></a>
+      <nav class="primary-nav" aria-label="主导航"><a href="index.html" aria-current="page">项目</a><a href="workspace.html?stage=caption">工作区</a><a href="delivery.html">交付</a></nav>
+      <div class="topbar-actions"><button class="btn btn-secondary" type="button" data-toast="项目发现需要由本地服务层提供。">打开本地项目</button><button class="icon-btn" type="button" aria-label="帮助" data-toast="状态与操作均来自 Video Harness 的真实文件协议。"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M9.7 9a2.5 2.5 0 1 1 3.7 2.2c-.9.5-1.4 1.1-1.4 2.3M12 17h.01"/></svg></button></div>
+    </div>
+  </header>
+  <main class="page">
+    <div>
+      <section class="page-head" data-od-id="overview-heading"><div><p class="eyebrow">项目总览</p><h1>继续完成你的下一条视频</h1><p class="page-meta">当前仅展示已连接的本地项目；排序按置顶与最近使用。</p></div><span class="tag"><span class="num">1</span> 个项目</span></section>
+      <section class="card project-card" data-od-id="active-project">
+        <div class="project-identity">
+          <button class="cover" type="button" id="coverPlay" aria-label="播放最终成片"><img src="assets/video-cover.jpg" alt="视频 Harness 工作流演示封面，展示字幕与时间轴画面" /><span class="cover-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 11 7-11 7V5Z"/></svg><span class="num">00:17</span></span></button>
+          <div class="identity-main">
+            <div>
+              <div class="identity-top">
+                <div><div class="row"><h2 class="project-title">视频 Harness 工作流演示</h2><span class="status-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>已完成</span></div><p class="project-description">把配音、字幕、分镜和局部返工统一到同一条可编辑时间轴上。</p></div>
+                <div class="menu-wrap"><button class="icon-btn" type="button" id="menuButton" aria-haspopup="menu" aria-expanded="false" aria-label="更多项目操作"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg></button><div class="menu" id="projectMenu" role="menu" hidden><button type="button" role="menuitem" data-toast="需要本地服务层安全打开项目目录。">打开项目目录</button><button type="button" role="menuitem" data-toast="将调用现有 status / validate 能力。">检查项目状态</button><button type="button" role="menuitem" id="copyPath">复制项目路径</button></div></div>
+              </div>
+              <div class="meta-row"><span class="tag">短视频</span><span class="tag num">540 × 960</span><span class="tag num">30 FPS</span><span class="tag">中文字幕已烧录</span></div>
+            </div>
+            <div class="identity-footer"><span class="muted">最近更新：2026 年 8 月 2 日 18:03</span><button class="btn btn-ghost" type="button" data-toast="项目已置顶；再次点击可取消置顶。">已置顶</button></div>
+          </div>
+        </div>
+        <div class="workspace-grid">
+          <div class="main-column">
+            <article class="action-card" data-od-id="recommended-action"><div><div class="action-kicker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>推荐下一步</div><h2>最终成片已经可以交付</h2><p class="action-copy">渲染与交付均已完成，字幕附件和交付清单已生成。</p></div><button class="btn btn-primary" type="button" id="playFinal"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 11 7-11 7V5Z"/></svg>查看最终成片</button></article>
+            <article class="card panel" data-od-id="stage-flow">
+              <div class="panel-header"><div><h2>创作流程</h2><p>六个创作阶段汇总十个技术状态；正常状态保持收起。</p></div><span class="status-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>全部完成</span></div>
+              <div class="progress-track" aria-label="项目阶段进度">
+                <button class="stage" type="button" data-stage="项目准备" data-href="workspace.html?stage=project" data-tech="项目设置|complete"><span class="stage-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></span><span class="stage-name">项目准备</span><span class="stage-state">已完成</span><span class="approval-marker"></span></button>
+                <button class="stage" type="button" data-stage="文案与音色" data-href="workspace.html?stage=script" data-tech="文案|approved;音频|complete"><span class="stage-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></span><span class="stage-name">文案与音色</span><span class="stage-state">已完成</span><span class="approval-marker">已批准</span></button>
+                <button class="stage" type="button" data-stage="分镜与视觉" data-href="workspace.html?stage=storyboard" data-tech="分镜|approved;设计规范|complete"><span class="stage-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></span><span class="stage-name">分镜与视觉</span><span class="stage-state">已完成</span><span class="approval-marker">已批准</span></button>
+                <button class="stage" type="button" data-stage="场景与字幕" data-href="workspace.html?stage=caption" data-tech="场景|complete;字幕|complete"><span class="stage-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></span><span class="stage-name">场景与字幕</span><span class="stage-state">已完成</span><span class="approval-marker"></span></button>
+                <button class="stage" type="button" data-stage="审阅" data-href="workspace.html?stage=review" data-tech="最终审阅|approved"><span class="stage-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></span><span class="stage-name">审阅</span><span class="stage-state">已完成</span><span class="approval-marker">已批准</span></button>
+                <button class="stage" type="button" data-stage="渲染交付" data-href="delivery.html" data-tech="渲染|complete;交付|complete"><span class="stage-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></span><span class="stage-name">渲染交付</span><span class="stage-state">已完成</span><span class="approval-marker"></span></button>
+              </div>
+            </article>
+          </div>
+          <aside class="task-sidebar" aria-label="当前项目待办">
+            <details class="card task-group" open><summary><span class="task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 4 7v5c0 5 3.4 8 8 9 4.6-1 8-4 8-9V7l-8-4Z"/></svg></span><span><span class="task-title">待审批</span><span class="task-subtitle">文案、分镜、最终审阅</span></span><span class="count num">0</span></summary><p class="task-empty">三个审批节点均已通过。</p></details>
+            <details class="card task-group" open><summary><span class="task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8.6"/><path d="M4 4v4.6h4.6"/></svg></span><span><span class="task-title">待返工</span><span class="task-subtitle">场景与字幕</span></span><span class="count num">0</span></summary><p class="task-empty">没有待处理的局部返工。</p></details>
+            <details class="card task-group" open><summary><span class="task-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 2.8 19h18.4L12 3Z"/><path d="M12 9v4"/></svg></span><span><span class="task-title">依赖阻塞</span><span class="task-subtitle">由阶段依赖推导</span></span><span class="count num">0</span></summary><p class="task-empty">所有阶段依赖均已满足。</p></details>
+            <article class="card approval-list"><h3>审批记录</h3><div class="approval-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>文案已批准</strong><span>2026-08-02 17:54</span></div></div><div class="approval-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>分镜已批准</strong><span>2026-08-02 17:54</span></div></div><div class="approval-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>最终审阅已批准</strong><span>2026-08-02 18:03</span></div></div></article>
+          </aside>
+        </div>
+      </section>
+      <section class="other-projects" data-od-id="other-projects"><button class="project-row" type="button" data-toast="当前只连接了 1 个本地项目。"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span><strong>其他项目</strong><span>暂无其他已连接项目</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m9 18 6-6-6-6"/></svg></button></section>
+    </div>
+  </main>
+  <dialog class="dialog" id="videoDialog" aria-labelledby="videoTitle"><div class="dialog-header"><h2 id="videoTitle">最终成片</h2><button class="icon-btn" type="button" data-close="videoDialog" aria-label="关闭视频"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="video-frame"><video id="finalVideo" controls poster="assets/video-cover.jpg" preload="metadata"><source src="assets/final.mp4" type="video/mp4" />你的浏览器暂不支持视频播放。</video></div></dialog>
+  <dialog class="dialog" id="stageDialog" aria-labelledby="stageTitle"><div class="dialog-header"><h2 id="stageTitle">阶段详情</h2><button class="icon-btn" type="button" data-close="stageDialog" aria-label="关闭阶段详情"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="stage-dialog-body"><p>正常子状态默认收起；你可以在这里核对对应的技术阶段。</p><div class="tech-list" id="techList"></div><div class="dialog-actions"><button class="btn btn-secondary" type="button" data-close="stageDialog">留在总览</button><button class="btn btn-primary" type="button" id="enterWorkspace">进入工作区</button></div></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong id="toastTitle">已记录</strong><span id="toastMessage"></span></div></div>
+  <script src="console-api.js"></script>
+  <script>
+    (() => {
+      const videoDialog=document.getElementById('videoDialog'),stageDialog=document.getElementById('stageDialog'),finalVideo=document.getElementById('finalVideo'),projectMenu=document.getElementById('projectMenu'),menuButton=document.getElementById('menuButton'),toast=document.getElementById('toast'),toastMessage=document.getElementById('toastMessage'),toastTitle=document.getElementById('toastTitle'),stageTitle=document.getElementById('stageTitle'),techList=document.getElementById('techList');
+      let activeStage='',toastTimer;
+      const showToast=(message,title='已记录')=>{toastTitle.textContent=title;toastMessage.textContent=message;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2600)};
+      const openVideo=()=>{videoDialog.showModal();finalVideo.currentTime=0;finalVideo.play().catch(()=>{})};
+      document.getElementById('coverPlay').addEventListener('click',openVideo);document.getElementById('playFinal').addEventListener('click',openVideo);
+      menuButton.addEventListener('click',()=>{const next=projectMenu.hidden;projectMenu.hidden=!next;menuButton.setAttribute('aria-expanded',String(next))});
+      document.addEventListener('click',event=>{if(!event.target.closest('.menu-wrap')){projectMenu.hidden=true;menuButton.setAttribute('aria-expanded','false')}});
+      document.querySelectorAll('[data-close]').forEach(button=>button.addEventListener('click',()=>{const dialog=document.getElementById(button.dataset.close);if(dialog===videoDialog)finalVideo.pause();dialog.close()}));
+      [videoDialog,stageDialog].forEach(dialog=>dialog.addEventListener('click',event=>{const rect=dialog.getBoundingClientRect(),outside=event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom;if(outside){if(dialog===videoDialog)finalVideo.pause();dialog.close()}}));
+      document.querySelectorAll('.stage').forEach(stage=>stage.addEventListener('click',()=>{location.href=stage.dataset.href}));
+      document.getElementById('enterWorkspace').addEventListener('click',()=>{stageDialog.close();location.hash='workspace/'+encodeURIComponent(activeStage);showToast('正在续接到「'+activeStage+'」上次离开的位置。','正在打开工作区')});
+      document.querySelectorAll('[data-toast]').forEach(element=>element.addEventListener('click',event=>{event.preventDefault();showToast(element.dataset.toast)}));
+      document.getElementById('copyPath').addEventListener('click',async()=>{const path='E:/自媒体/视频制作/runs/video-harness-workflow-demo-20260802';try{await navigator.clipboard.writeText(path);showToast('项目路径已复制到剪贴板。','复制成功')}catch{showToast('浏览器未授予剪贴板权限。','无法复制')}projectMenu.hidden=true;menuButton.setAttribute('aria-expanded','false')});
+    })();
+  // ── OpenDesign 总览页接线(真实数据,2026-08-03)──────────────────────────
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  let toastTimer;
+  const showToast = (message, title) => {
+    const toast = $("toast"), toastTitle = $("toastTitle"), toastMessage = $("toastMessage");
+    if (!toast) return;
+    toastTitle.textContent = title || "已记录";
+    toastMessage.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+  };
+  const TECH_TO_STAGE = {
+    项目设置: "setup", 文案: "script", 音频: "audio", 分镜: "storyboard",
+    设计规范: "design", 场景: "scenes", 字幕: "captions", 最终审阅: "review",
+    渲染: "render", 交付: "delivery",
+  };
+  const stageStateText = (s) => ["complete", "approved"].includes(s) ? "已完成"
+    : s === "needs_approval" ? "待审批" : s === "running" ? "进行中"
+    : s === "failed" ? "失败" : s === "ready" ? "待处理" : "未开始";
+
+  (async () => {
+    try {
+      const [project, status] = await Promise.all([
+        ConsoleApi.getJson("/api/project"),
+        ConsoleApi.getJson("/api/status"),
+      ]);
+      const stages = status.state.stages || {};
+
+      // 阶段按钮:按 data-tech 映射真实状态
+      document.querySelectorAll(".stage").forEach((btn) => {
+        const names = (btn.dataset.tech || "").split(";").map((t) => t.split("|")[0].trim());
+        const states = names.map((n) => stages[TECH_TO_STAGE[n]]?.status).filter(Boolean);
+        btn.classList.remove("done", "gate", "failed", "running");
+        const worst = states.includes("failed") ? "failed"
+          : states.includes("needs_approval") ? "gate"
+          : states.length > 0 && states.every((s) => ["complete", "approved"].includes(s)) ? "done" : "pending";
+        if (worst !== "pending") btn.classList.add(worst);
+        const stateEl = btn.querySelector(".stage-state");
+        const markerEl = btn.querySelector(".approval-marker");
+        if (stateEl) stateEl.textContent = states.length ? stageStateText(states[states.length - 1]) : "未开始";
+        if (markerEl) {
+          if (states.includes("needs_approval")) markerEl.textContent = "待审批";
+          else if (states.length > 0 && states.every((s) => s === "approved")) markerEl.textContent = "已批准";
+          else markerEl.textContent = "";
+        }
+      });
+
+      // 项目信息
+      const titleEl = document.querySelector(".project-title");
+      if (titleEl) titleEl.textContent = project.project.title || "未命名项目";
+      const descEl = document.querySelector(".project-description");
+      if (descEl && project.project.workflow?.message) descEl.textContent = project.project.workflow.message;
+      const statusLabel = document.querySelector(".project-card .status-label");
+      if (statusLabel) {
+        const done = ["render", "delivery"].every((s) => ["complete", "approved"].includes(stages[s]?.status));
+        statusLabel.innerHTML = done
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>已完成'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>进行中';
+      }
+      const metaRow = document.querySelector(".meta-row");
+      if (metaRow) {
+        const w = project.project.render?.width, h = project.project.render?.height, fps = project.project.render?.fps;
+        metaRow.innerHTML = '<span class="tag">短视频</span>'
+          + (w && h ? '<span class="tag num">' + w + " × " + h + "</span>" : "")
+          + (fps ? '<span class="tag num">' + fps + " FPS</span>" : "")
+          + '<span class="tag">中文字幕' + (project.project.render?.burnCaptions ? "已烧录" : "旁车") + "</span>";
+      }
+      const updatedEl = document.querySelector(".identity-footer .muted");
+      if (updatedEl && project.project.updatedAt) {
+        updatedEl.textContent = "最近更新：" + new Date(project.project.updatedAt).toLocaleString("zh-CN");
+      }
+
+      // 审批记录(真实 approvals.records)
+      const approvalList = document.querySelector(".approval-list");
+      if (approvalList) {
+        approvalList.querySelectorAll(".approval-row").forEach((el) => el.remove());
+        const records = status.approvals?.records || {};
+        const stageNames = { script: "文案", storyboard: "分镜", review: "最终审阅" };
+        const rows = Object.entries(records).filter(([k]) => stageNames[k]);
+        if (rows.length === 0) {
+          const empty = document.createElement("p");
+          empty.className = "task-empty";
+          empty.textContent = "尚无审批记录。";
+          approvalList.appendChild(empty);
+        } else {
+          rows.forEach(([stage, rec]) => {
+            const row = document.createElement("div");
+            row.className = "approval-row";
+            row.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>'
+              + (stageNames[stage] || stage) + "已批准</strong><span>"
+              + (rec.approvedAt ? new Date(rec.approvedAt).toLocaleString("zh-CN") : "") + "</span></div>";
+            approvalList.appendChild(row);
+          });
+        }
+      }
+
+      // 成片视频源(真实 delivery/final.mp4)
+      const videoSrc = document.querySelector("#finalVideo source");
+      if (videoSrc && project.delivery?.exists) {
+        videoSrc.src = "delivery/final.mp4";
+        const video = $("finalVideo");
+        if (video) video.load();
+      }
+
+      // 复制路径(真实项目根,替换旧绑定)
+      const copyBtn = $("copyPath");
+      if (copyBtn) {
+        const fresh = copyBtn.cloneNode(true);
+        copyBtn.parentNode.replaceChild(fresh, copyBtn);
+        fresh.addEventListener("click", () => {
+          navigator.clipboard.writeText(project.root)
+            .then(() => showToast("已复制项目路径：" + project.root, "复制成功"))
+            .catch(() => showToast(project.root, "手动复制"));
+        });
+      }
+
+      // 项目数量标签
+      const numTag = document.querySelector(".page-head .tag .num");
+      if (numTag) numTag.textContent = "1";
+    } catch (error) {
+      showToast("无法连接本地服务：" + error.message + "。请运行 video-harness serve <项目目录> 后访问。", "服务不可用");
+    }
+  })();
+})();
+
+</script>
+</body>
+</html>

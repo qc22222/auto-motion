@@ -1,6 +1,7 @@
-import { createReadStream, existsSync, realpathSync, statSync } from "node:fs";
+import { createReadStream, existsSync, readFileSync, realpathSync, statSync } from "node:fs";
 import { createServer } from "node:http";
-import { extname, isAbsolute, join, relative } from "node:path";
+import { dirname, extname, isAbsolute, join, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { inspectAudioReadiness } from "./audio-readiness.mjs";
 import { generateAudio } from "./audio.mjs";
 import { applyProjectEdit, getEditCatalog, previewProjectEdit } from "./editor.mjs";
@@ -20,7 +21,7 @@ import {
 import { buildEditWorkbenchHtml } from "./workbench.mjs";
 
 const MAX_BODY_BYTES = 256 * 1024;
-const STATIC_PREFIXES = ["reviews/", "scenes/", "renders/", "captions/", "compositions/", "assets/"];
+const STATIC_PREFIXES = ["reviews/", "scenes/", "renders/", "captions/", "compositions/", "assets/", "delivery/"];
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -124,6 +125,25 @@ function safeStaticPath(root, pathname) {
   return realPath;
 }
 
+// OpenDesign 三页面控制台:video-harness/console/ 下的全局静态文件(只读)。
+const CONSOLE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "console");
+function safeConsolePath(pathname) {
+  let relativePath;
+  try {
+    relativePath = decodeURIComponent(pathname).replace(/^\/+/, "").replace(/^console\/+/, "");
+  } catch {
+    return null;
+  }
+  if (!relativePath) relativePath = "index.html";
+  const path = resolve(CONSOLE_ROOT, relativePath);
+  const realRoot = realpathSync(CONSOLE_ROOT);
+  const realPath = realpathSync(path);
+  const rel = relative(realRoot, realPath);
+  if (rel.startsWith("..") || isAbsolute(rel)) return null;
+  if (!existsSync(path) || !statSync(path).isFile()) return null;
+  return realPath;
+}
+
 function serveFile(request, response, path) {
   const stat = statSync(path);
   const contentType = MIME_TYPES[extname(path).toLowerCase()] || "application/octet-stream";
@@ -188,6 +208,22 @@ export async function startHarnessServer(projectRoot, options = {}) {
       const url = new URL(request.url || "/", "http://127.0.0.1");
       if (request.method === "GET" && url.pathname === "/api/edit/catalog") {
         sendJson(response, 200, getEditCatalog(root));
+        return;
+      }
+      if (request.method === "GET" && url.pathname === "/api/project") {
+        const projectModel = loadProjectModel(root);
+        const deliveryManifestPath = join(root, "delivery", "manifest.json");
+        sendJson(response, 200, {
+          root,
+          project: projectModel.project,
+          script: projectModel.script,
+          voice: projectModel.voice,
+          storyboard: projectModel.storyboard,
+          delivery: {
+            exists: existsSync(join(root, "delivery", "final.mp4")),
+            manifest: existsSync(deliveryManifestPath) ? JSON.parse(readFileSync(deliveryManifestPath, "utf8")) : null,
+          },
+        });
         return;
       }
       if (request.method === "GET" && url.pathname === "/api/status") {
@@ -310,6 +346,15 @@ export async function startHarnessServer(projectRoot, options = {}) {
         const location = existsSync(join(root, "reviews", "index.html")) ? "/reviews/index.html" : "/edit";
         response.writeHead(302, { location, "cache-control": "no-store" });
         response.end();
+        return;
+      }
+      if (request.method === "GET" && url.pathname.startsWith("/console/")) {
+        const path = safeConsolePath(url.pathname);
+        if (path) {
+          serveFile(request, response, path);
+          return;
+        }
+        sendJson(response, 404, { error: "控制台资源不存在" });
         return;
       }
       if (["GET", "HEAD"].includes(request.method || "")) {

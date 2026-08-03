@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Video Harness · 审阅与交付</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --surface-warm: var(--surface);
+      --fg: #111111;
+      --fg-2: var(--fg);
+      --muted: #6b6b6b;
+      --meta: var(--muted);
+      --border: #e5e5e5;
+      --border-soft: var(--border);
+      --accent: #2f6feb;
+      --accent-on: #ffffff;
+      --accent-hover: color-mix(in oklab, var(--accent), black 8%);
+      --accent-active: color-mix(in oklab, var(--accent), black 14%);
+      --success: #17a34a;
+      --warn: #eab308;
+      --danger: #dc2626;
+      --font-display: "Inter", -apple-system, system-ui, sans-serif;
+      --font-body: "Inter", -apple-system, system-ui, sans-serif;
+      --font-mono: ui-monospace, "JetBrains Mono", monospace;
+      --text-xs: 12px;
+      --text-sm: 14px;
+      --text-base: 16px;
+      --text-lg: 20px;
+      --text-xl: 24px;
+      --text-2xl: 32px;
+      --text-3xl: 48px;
+      --text-4xl: 64px;
+      --leading-body: 1.5;
+      --leading-tight: 1.2;
+      --tracking-display: -0.01em;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-12: 48px;
+      --space-20: 80px;
+      --section-y-desktop: 80px;
+      --section-y-tablet: 48px;
+      --section-y-phone: 32px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-pill: 9999px;
+      --elev-flat: none;
+      --elev-ring: 0 0 0 1px var(--border);
+      --elev-raised: 0 2px 8px color-mix(in oklab, var(--fg), transparent 92%);
+      --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent), transparent 70%);
+      --motion-fast: 150ms;
+      --motion-base: 200ms;
+      --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+      --container-max: 1200px;
+      --container-gutter-desktop: 24px;
+      --container-gutter-tablet: 16px;
+      --container-gutter-phone: 12px;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/workbench.css" />
+</head>
+<body data-page="delivery">
+  <header class="app-topbar" data-od-id="topnav">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="返回 Video Harness 项目总览"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 5.5v13M17 5.5v13M7 12h10"/><path d="m10 8 4 4-4 4"/></svg></span><span>Video Harness</span></a>
+      <nav class="primary-nav" aria-label="主导航"><a href="index.html">项目</a><a href="workspace.html">工作区</a><a href="delivery.html" aria-current="page">交付</a></nav>
+      <div class="topbar-actions"><span class="status success">交付已完成</span><button class="icon-btn" type="button" aria-label="打开输出目录" data-toast="打开本地输出目录需要由本地服务层执行。"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 6h7l2 2h9v10H3z"/></svg></button></div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="page-head" data-od-id="delivery-heading"><div><p class="eyebrow">视频 Harness 工作流演示 / 审阅与交付</p><h1>最终成片与交付文件</h1><p>先确认最终审阅与渲染结果，再下载视频和字幕附件。</p></div><div class="topbar-actions"><a class="btn btn-secondary" href="workspace.html?stage=review">返回最终审阅</a><a class="btn btn-primary" href="assets/delivery/final.mp4" download="video-harness-final.mp4">下载最终成片</a></div></section>
+
+    <section class="delivery-layout" data-od-id="delivery-workspace">
+      <article class="surface-raised delivery-preview">
+        <div class="section-head"><div><h2>成片预览</h2><p>交付文件来自演示项目的实际 assemble 产物。</p></div><span class="tag mono">final.mp4</span></div>
+        <div class="delivery-video"><video controls poster="assets/video-cover.jpg" preload="metadata"><source src="assets/delivery/final.mp4" type="video/mp4" />当前浏览器无法播放视频。</video></div>
+        <div class="delivery-toolbar"><div><strong>竖屏短视频 · H.264 + AAC</strong><span class="mono">540 × 960 · 30 FPS · 17.133 秒</span></div><div class="topbar-actions"><button class="btn btn-secondary" type="button" data-dialog-open="rebuildDialog">重新生成交付包</button><a class="btn btn-quiet" href="assets/delivery/final.mp4" download="video-harness-final.mp4">下载 MP4</a></div></div>
+      </article>
+
+      <aside class="side-stack" aria-label="交付检查与文件">
+        <article class="surface side-card"><div class="side-card-head"><h2>最终审阅</h2><span class="status success">已批准</span></div><div class="approval-banner"><strong>最终审阅已批准</strong><span>2026-08-02 18:03 · ASS 字幕升级后批准</span></div><div class="approval-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>3 个场景通过检查</strong><span>源文件与场景渲染均存在</span></div><span class="mono">3/3</span></div><div class="approval-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>8 条字幕已生成</strong><span>烧录字幕与旁挂字幕同时提供</span></div><span class="mono">8</span></div></article>
+
+        <article class="surface side-card"><div class="side-card-head"><h2>渲染检查</h2><span class="status success">通过</span></div><div class="check-list"><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>视频流有效</strong><span>H.264 · yuv420p · 540 × 960</span></div></div><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>音频流有效</strong><span>AAC · 含旁白 · 无背景音乐</span></div></div><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>时长检查通过</strong><span class="mono">17.133 秒</span></div></div></div></article>
+
+        <article class="surface side-card"><div class="side-card-head"><h2>交付文件</h2><span class="tag mono">4 个</span></div><div class="file-list"><a class="file-row" href="assets/delivery/final.mp4" download="video-harness-final.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m10 8 6 4-6 4V8Z"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg><span><strong>final.mp4</strong><span>最终成片 · 竖屏</span></span><span class="mono">下载</span></a><a class="file-row" href="assets/delivery/captions.srt" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h10l4 4v14H5zM15 3v5h5M8 12h8M8 16h6"/></svg><span><strong>captions.srt</strong><span>通用字幕附件</span></span><span class="mono">下载</span></a><a class="file-row" href="assets/delivery/captions.vtt" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h10l4 4v14H5zM15 3v5h5M8 12h8M8 16h6"/></svg><span><strong>captions.vtt</strong><span>网页字幕附件</span></span><span class="mono">下载</span></a><a class="file-row" href="assets/delivery/captions.ass" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h10l4 4v14H5zM15 3v5h5M8 12h8M8 16h6"/></svg><span><strong>captions.ass</strong><span>带样式字幕附件</span></span><span class="mono">下载</span></a></div></article>
+      </aside>
+    </section>
+  </main>
+
+  <dialog class="dialog" id="rebuildDialog" aria-labelledby="rebuildTitle"><div class="dialog-head"><h2 id="rebuildTitle">重新生成交付包</h2><button class="icon-btn" type="button" data-dialog-close aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="dialog-body"><p>这项操作会重新拼接现有场景、封装旁白并烧录字幕，不会重新制作已经有效的场景。</p><ul class="impact-list"><li><span>复用场景渲染</span><span>3 个</span></li><li><span>重新生成</span><span>最终交付包</span></li><li><span>前置条件</span><span>最终审阅已批准</span></li></ul><div class="dialog-actions"><button class="btn btn-secondary" type="button" data-dialog-close>取消</button><button class="btn btn-primary" type="button" id="confirmRebuildDelivery">确认生成</button></div></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong id="toastTitle">操作已记录</strong><span id="toastMessage"></span></div></div>
+  <script src="console-api.js"></script>
+  <script src="console-ui.js"></script>
+  <script>
+// ── OpenDesign 交付页接线(真实数据,2026-08-03)──────────────────────────
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  let toastTimer;
+  const showToast = (message, title) => {
+    const toast = $("toast"), toastTitle = $("toastTitle"), toastMessage = $("toastMessage");
+    if (!toast) return;
+    toastTitle.textContent = title || "已记录";
+    toastMessage.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+  };
+
+  (async () => {
+    try {
+      const [project, status] = await Promise.all([
+        ConsoleApi.getJson("/api/project"),
+        ConsoleApi.getJson("/api/status"),
+      ]);
+      const stages = status.state.stages || {};
+
+      // 状态徽章
+      const badge = document.querySelector(".topbar-actions .status");
+      if (badge) {
+        const done = ["render", "delivery"].every((s) => ["complete", "approved"].includes(stages[s]?.status));
+        badge.textContent = done ? "交付已完成" : stages.delivery?.status === "running" ? "正在交付" : "交付未完成";
+        badge.className = "status " + (done ? "success" : "pending");
+      }
+
+      // 视频源
+      const video = document.querySelector(".delivery-video video");
+      const videoSrc = video ? video.querySelector("source") : null;
+      if (project.delivery?.exists) {
+        if (videoSrc) videoSrc.src = "delivery/final.mp4";
+        if (video) video.load();
+      } else if (video) {
+        video.style.opacity = "0.4";
+      }
+
+      // 工具条:编码/分辨率/时长/字幕
+      const toolbar = document.querySelector(".delivery-toolbar strong");
+      const toolbarMono = document.querySelector(".delivery-toolbar .mono");
+      const render = project.project.render || {};
+      if (toolbar) {
+        toolbar.textContent = (project.project.workflow?.destination === "short-video" ? "竖屏短视频" : "短视频")
+          + " · " + (render.videoCodec || "H.264") + " + " + (render.audioCodec || "AAC");
+      }
+      if (toolbarMono) {
+        const total = project.storyboard?.totalDuration;
+        toolbarMono.textContent = (render.width || "?") + "×" + (render.height || "?") + " · "
+          + (render.fps || "?") + " FPS" + (total ? " · " + Number(total).toFixed(1) + "s" : "")
+          + (render.burnCaptions ? " · 字幕已烧录" : "");
+      }
+
+      // 交付文件列表(manifest)
+      const fileList = document.querySelector(".delivery-file-list");
+      if (fileList && project.delivery?.manifest?.video) {
+        fileList.replaceChildren();
+        const rows = [
+          ["最终成片", "delivery/final.mp4"],
+          ["交付清单", "delivery/manifest.json"],
+          ["字幕 SRT", "delivery/captions.srt"],
+          ["字幕 VTT", "delivery/captions.vtt"],
+          ["字幕 ASS", "delivery/captions.ass"],
+        ];
+        rows.forEach(([name, rel]) => {
+          const row = document.createElement("a");
+          row.className = "file-row";
+          row.href = rel;
+          row.download = rel.split("/").pop();
+          row.innerHTML = '<span><strong>' + name + "</strong><span class=\"mono\">" + rel + "</span></span><span>下载</span>";
+          fileList.appendChild(row);
+        });
+      }
+
+      // 重建交付包按钮 → pipeline advance(轮询)
+      const rebuildBtn = document.querySelector("#rebuildDialog .btn-primary");
+      if (rebuildBtn) {
+        const fresh = rebuildBtn.cloneNode(true);
+        rebuildBtn.parentNode.replaceChild(fresh, rebuildBtn);
+        fresh.addEventListener("click", async () => {
+          try {
+            fresh.disabled = true;
+            fresh.textContent = "正在重新生成…";
+            await ConsoleApi.waitForJob(await ConsoleApi.api("/api/pipeline/advance", {}), () => {
+              fresh.textContent = "正在重新生成…";
+            });
+            showToast("交付包已重新生成。", "完成");
+            const dialog = $("rebuildDialog");
+            if (dialog && dialog.open) dialog.close();
+            location.reload();
+          } catch (error) {
+            showToast(error.message, "失败");
+            fresh.disabled = false;
+            fresh.textContent = "确认生成";
+          }
+        });
+      }
+    } catch (error) {
+      showToast("无法连接本地服务：" + error.message, "服务不可用");
+    }
+  })();
+})();
+
+  </script>
+</body>
+</html>
