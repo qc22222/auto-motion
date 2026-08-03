@@ -74,3 +74,9 @@
 - voice-profile 关键参数:`provider=indextts2`、`speed=1.1`、`direction=热情、明快、有感染力、元气满满、精神饱满`、`emotionMode=delivery`、`emotionWeight=0.8`。
 - 旧参考音频(养老金...mp3)响度过低(-23dB、LRA 1.4)导致克隆低沉,已弃用;源 mp3 在项目根目录未入库,建议移入各项目 `assets/reference/`。
 - 待办:新音色(11.47s)与旧场景时长不匹配,正式成片需重新生成场景(Claude Code ~40min)或下次新建项目直接使用。
+## 场景生成并行化(2026-08-03 实测通过)
+
+- `pipeline.mjs` 一次调用 `generateScenes`(内部按状态过滤 pending,已 complete 不重跑);`generator.mjs` 用 `mapWithConcurrency` 有界并发,默认 3,`HYPERFRAMES_SCENE_CONCURRENCY` 可配,=1 退化为串行。
+- 失败隔离:单场景失败只标记自身,全部结束后统一汇总。
+- 竞态修复:并行时场景 A 完成触发的 `compileProject` 会用 inputHash 检测误标其他 running 场景 → `compile.mjs` 已跳过 running 场景。
+- 实测:3 场景 22min(串行 50min),成功率与时长校验零折扣;45 项测试全绿。
