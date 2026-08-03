@@ -30,6 +30,8 @@ const DEFAULT_WORKSPACE_WHISPER = resolve(
 // 用 ANSI 编码打开模型路径，用户名含中文时必须把 USERPROFILE 重定向到 ASCII 家目录。
 const ASCII_HYPERFRAMES_HOME = "E:/models/hyperframes-home";
 
+const DEFAULT_WHISPER_MODEL_DIR = "E:/models/whisper/models";
+
 // ── provider detection ────────────────────────────────────────────────────────
 export function heygenAvailable() {
   return heygenCredential() !== null;
@@ -607,29 +609,123 @@ export async function synthesizeHeygen({ text, voiceId, lang, speed, wavAbs }, d
 }
 
 // Kokoro has no word timings — run Whisper over the wav. Returns the
-// flat [{id,text,start,end}] word array, or null. Each call uses a throwaway
-// --dir so parallel scenes don't collide on transcript.json.
+// 常用繁→简映射(whisper 中文转写偏繁体;字幕文本应使用简体)。
+// 覆盖常见用字;未收录的字保留原样(可后续扩展)。
+const TRAD_TO_SIMPLE = {
+  "變": "变", "聲": "声", "畫": "画", "針": "针", "線": "线", "說": "说", "這": "这",
+  "條": "条", "讓": "让", "時": "时", "間": "间", "動": "动", "義": "义", "髮": "发",
+  "後": "后", "裏": "里", "門": "门", "問": "问", "開": "开", "來": "来", "東": "东",
+  "樂": "乐", "對": "对", "幫": "帮", "幹": "干", "從": "从", "見": "见", "愛": "爱",
+  "點": "点", "電": "电", "風": "风", "飛": "飞", "國": "国", "過": "过", "會": "会",
+  "機": "机", "幾": "几", "記": "记", "覺": "觉", "離": "离", "兩": "两", "馬": "马",
+  "買": "买", "賣": "卖", "們": "们", "難": "难", "腦": "脑", "內": "内", "鳥": "鸟",
+  "農": "农", "區": "区", "確": "确", "熱": "热", "認": "认", "賽": "赛", "師": "师",
+  "書": "书", "術": "术", "數": "数", "雙": "双", "雖": "虽", "體": "体", "聽": "听",
+  "頭": "头", "圖": "图", "萬": "万", "網": "网", "衛": "卫", "無": "无", "寫": "写",
+  "謝": "谢", "興": "兴", "學": "学", "樣": "样", "爺": "爷", "業": "业", "藝": "艺",
+  "應": "应", "優": "优", "郵": "邮", "語": "语", "遠": "远", "願": "愿", "運": "运",
+  "雜": "杂", "戰": "战", "張": "张", "長": "长", "著": "着", "爭": "争", "隻": "只",
+  "種": "种", "眾": "众", "準": "准", "資": "资", "匯": "汇", "馬": "马", "麼": "么",
+  "嗎": "吗", "唸": "念", "塊": "块", "壞": "坏", "壓": "压", "嚴": "严", "餘": "余",
+  "園": "园", "員": "员", "圓": "圆", "報": "报", "場": "场", "處": "处", "傳": "传",
+  "創": "创", "單": "单", "導": "导", "島": "岛", "檔": "档", "燈": "灯", "獨": "独",
+  "斷": "断", "隊": "队", "爾": "尔", "發": "发", "範": "范", "訪": "访", "豐": "丰",
+  "該": "该", "趕": "赶", "鋼": "钢", "個": "个", "給": "给", "夠": "够", "構": "构",
+  "觀": "观", "歸": "归", "韓": "韩", "漢": "汉", "號": "号", "紅": "红", "劃": "划",
+  "懷": "怀", "環": "环", "換": "换", "黃": "黄", "擊": "击", "積": "积", "極": "极",
+  "價": "价", "劍": "剑", "講": "讲", "節": "节", "盡": "尽", "驚": "惊", "舉": "举",
+  "劇": "剧", "據": "据", "絕": "绝", "軍": "军", "庫": "库", "虧": "亏", "蘭": "兰",
+  "爛": "烂", "勞": "劳", "裏": "里", "禮": "礼", "麗": "丽", "連": "连", "練": "练",
+  "涼": "凉", "鄰": "邻", "靈": "灵", "劉": "刘", "龍": "龙", "樓": "楼", "錄": "录",
+  "論": "论", "滿": "满", "貓": "猫", "夢": "梦", "彌": "弥", "麵": "面", "滅": "灭",
+  "鳴": "鸣", "謀": "谋", "擬": "拟", "寧": "宁", "歐": "欧", "盤": "盘", "評": "评",
+  "撲": "扑", "樸": "朴", "齊": "齐", "啟": "启", "氣": "气", "牽": "牵", "錢": "钱",
+  "槍": "枪", "橋": "桥", "親": "亲", "輕": "轻", "請": "请", "慶": "庆", "窮": "穷",
+  "趨": "趋", "權": "权", "勸": "劝", "確": "确", "讓": "让", "繞": "绕", "熱": "热",
+  "榮": "荣", "軟": "软", "灑": "洒", "傘": "伞", "喪": "丧", "掃": "扫", "殺": "杀",
+  "曬": "晒", "傷": "伤", "設": "设", "聲": "声", "聖": "圣", "勝": "胜", "師": "师",
+  "濕": "湿", "實": "实", "識": "识", "勢": "势", "釋": "释", "適": "适", "壽": "寿",
+  "獸": "兽", "輸": "输", "屬": "属", "術": "术", "樹": "树", "帥": "帅", "順": "顺",
+  "絲": "丝", "鬆": "松", "訴": "诉", "歲": "岁", "隨": "随", "損": "损", "鎖": "锁",
+  "臺": "台", "態": "态", "談": "谈", "湯": "汤", "糖": "糖", "騰": "腾", "題": "题",
+  "條": "条", "貼": "贴", "鐵": "铁", "廳": "厅", "聽": "听", "銅": "铜", "統": "统",
+  "頭": "头", "塗": "涂", "團": "团", "推": "推", "託": "托", "灣": "湾", "頑": "顽",
+  "網": "网", "圍": "围", "偉": "伟", "偽": "伪", "衛": "卫", "謂": "谓", "溫": "温",
+  "聞": "闻", "問": "问", "窩": "窝", "烏": "乌", "務": "务", "霧": "雾", "習": "习",
+  "係": "系", "細": "细", "俠": "侠", "峽": "峡", "顯": "显", "險": "险", "縣": "县",
+  "現": "现", "線": "线", "獻": "献", "鄉": "乡", "響": "响", "項": "项", "曉": "晓",
+  "銷": "销", "蕭": "萧", "協": "协", "脅": "胁", "寫": "写", "謝": "谢", "興": "兴",
+  "選": "选", "懸": "悬", "詢": "询", "尋": "寻", "壓": "压", "煙": "烟", "嚴": "严",
+  "顏": "颜", "驗": "验", "揚": "扬", "養": "养", "藥": "药", "葉": "叶", "醫": "医",
+  "儀": "仪", "遺": "遗", "憶": "忆", "譯": "译", "陰": "阴", "隱": "隐", "營": "营",
+  "贏": "赢", "擁": "拥", "優": "优", "憂": "忧", "猶": "犹", "郵": "邮", "遊": "游",
+  "漁": "渔", "與": "与", "嶼": "屿", "預": "预", "譽": "誉", "淵": "渊", "員": "员",
+  "園": "园", "圓": "圆", "緣": "缘", "遠": "远", "願": "愿", "約": "约", "躍": "跃",
+  "雲": "云", "運": "运", "雜": "杂", "載": "载", "贊": "赞", "臟": "脏", "責": "责",
+  "擇": "择", "澤": "泽", "贈": "赠", "戰": "战", "張": "张", "帳": "帐", "針": "针",
+  "偵": "侦", "鎮": "镇", "陣": "阵", "爭": "争", "證": "证", "鄭": "郑", "隻": "只",
+  "職": "职", "紙": "纸", "誌": "志", "製": "制", "質": "质", "鐘": "钟", "腫": "肿",
+  "種": "种", "眾": "众", "週": "周", "豬": "猪", "燭": "烛", "築": "筑", "裝": "装",
+  "壯": "壮", "狀": "状", "準": "准", "濁": "浊", "資": "资", "縱": "纵", "鑽": "钻",
+};
+
+export function simplifyText(text) {
+  return String(text || "").replace(/[\u4E00-\u9FFF]/g, (ch) => TRAD_TO_SIMPLE[ch] || ch);
+}
+
+
+// 把 whisper 的逐 token 时间戳(毫秒)聚合成词级 [{text,start,end}](秒)。
+// 中文 token 基本逐字:标点并入前词;停顿(>pauseGap)或长度(>=maxWordChars)断词。
+export function aggregateWhisperTokens(tokens, options = {}) {
+  const maxWordChars = Math.max(2, Number(options.maxWordChars) || 8);
+  const pauseGap = Math.max(0.1, Number(options.pauseGap) || 0.35);
+  const PUNCT = /[，。！？、；：,.!?;:…—]/;
+  const words = [];
+  let current = null;
+  for (const token of tokens || []) {
+    const text = String(token?.text ?? "").replace(/\s+/g, "").trim();
+    if (!text || /^\[_/.test(text)) continue;
+    const hasOffsets = token?.offsets != null;
+    const start = Number(hasOffsets ? token.offsets.from : token?.start ?? 0) / (hasOffsets ? 1000 : 1);
+    const end = Number(hasOffsets ? token.offsets.to : token?.end ?? start) / (hasOffsets ? 1000 : 1);
+    if (!current) {
+      current = { text, start, end };
+      continue;
+    }
+    if (PUNCT.test(text)) {
+      current.text += text;
+      current.end = end;
+      continue;
+    }
+    if (start - current.end > pauseGap || [...current.text].length >= maxWordChars) {
+      words.push(current);
+      current = { text, start, end };
+    } else {
+      current.text += text;
+      current.end = end;
+    }
+  }
+  if (current) words.push(current);
+  return words.map((word) => ({ ...word, text: simplifyText(word.text) }));
+}
+
+// 词级时间戳对齐:直连 whisper-cli(-ojf 完整 JSON,tokens 含逐字毫秒时间戳),
+// 聚合成 flat [{text,start,end}] word array,或 null。不再依赖 hyperframes
+// transcribe 的整句粒度(其 transcript.json 每段只有 1 个词)。
 export async function transcribeWav({ wavRel, lang = "en", hyperframesDir }) {
   const alignmentLanguage = normalizeEngineLanguage(lang, "alignment");
-  const model = alignmentLanguage === "en" ? "small.en" : "small";
-  const td = mkdtempSync(join(tmpdir(), "hf-trans-"));
-  const args = ["hyperframes", "transcribe", wavRel, "--model", model, "--dir", td];
-  if (alignmentLanguage !== "en") args.push("--language", alignmentLanguage);
-  let invocation;
-  try {
-    invocation = resolveHyperframesInvocation({
-      args,
-      hyperframesDir,
-      label: "word alignment (hyperframes-local.ps1 transcribe)",
-    });
-  } catch {
-    rmSync(td, { recursive: true, force: true });
-    return null;
-  }
+  const whisperBin = process.env.HYPERFRAMES_WHISPER_PATH || DEFAULT_WORKSPACE_WHISPER;
+  const modelDir = process.env.HYPERFRAMES_WHISPER_MODEL_DIR || DEFAULT_WHISPER_MODEL_DIR;
+  if (!existsSync(whisperBin)) return null;
+  const preferred = join(modelDir, alignmentLanguage === "en" ? "ggml-small.en.bin" : "ggml-small.bin");
+  const model = existsSync(preferred) ? preferred : join(modelDir, "ggml-small.bin");
+  if (!existsSync(model)) return null;
+  const wavAbs = resolve(hyperframesDir, wavRel);
+  if (!existsSync(wavAbs)) return null;
+  const td = mkdtempSync(join(tmpdir(), "hf-wt-"));
+  const outPrefix = join(td, "out");
+  const args = ["-m", model, "-f", wavAbs, "-l", alignmentLanguage, "-sow", "-ojf", "-of", outPrefix];
   const alignmentEnv = { ...process.env };
-  if (!alignmentEnv.HYPERFRAMES_WHISPER_PATH && existsSync(DEFAULT_WORKSPACE_WHISPER)) {
-    alignmentEnv.HYPERFRAMES_WHISPER_PATH = DEFAULT_WORKSPACE_WHISPER;
-  }
   if (
     process.platform === "win32"
     && /[^\x00-\x7F]/.test(alignmentEnv.USERPROFILE || "")
@@ -637,19 +733,22 @@ export async function transcribeWav({ wavRel, lang = "en", hyperframesDir }) {
   ) {
     alignmentEnv.USERPROFILE = ASCII_HYPERFRAMES_HOME;
   }
-  const r = await spawnP(invocation.cmd, invocation.args, { cwd: hyperframesDir, env: alignmentEnv });
   let words = null;
-  if (r.status === 0) {
-    const src = join(td, "transcript.json");
-    if (existsSync(src)) {
-      try {
-        const arr = JSON.parse(readFileSync(src, "utf8"));
-        if (Array.isArray(arr) && arr.length) words = arr;
-      } catch {}
+  try {
+    const r = await spawnP(whisperBin, args, { env: alignmentEnv, stdio: ["ignore", "pipe", "pipe"] });
+    if (r.status === 0) {
+      const src = `${outPrefix}.json`;
+      if (existsSync(src)) {
+        const parsed = JSON.parse(readFileSync(src, "utf8"));
+        const tokens = (parsed.transcription || []).flatMap((segment) => segment.tokens || []);
+        words = aggregateWhisperTokens(tokens);
+      }
     }
+  } catch {
+    words = null;
   }
   rmSync(td, { recursive: true, force: true });
-  return words;
+  return words && words.length > 0 ? words : null;
 }
 
 // ── tiny local utils ──────────────────────────────────────────────────────────
