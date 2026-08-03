@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [string]$Python = 'python',
     [string]$EnvironmentPath = ''
@@ -17,10 +17,12 @@ $target = if ([string]::IsNullOrWhiteSpace($EnvironmentPath)) {
     [IO.Path]::GetFullPath($EnvironmentPath)
 }
 $target = [IO.Path]::GetFullPath($target)
-$relativeTarget = [IO.Path]::GetRelativePath($workspaceRoot, $target)
-$outsidePrefix = '..' + [IO.Path]::DirectorySeparatorChar
+$targetTrimmed = $target.TrimEnd([IO.Path]::DirectorySeparatorChar, '/', '\')
+$rootTrimmed = $workspaceRoot.TrimEnd([IO.Path]::DirectorySeparatorChar, '/', '\')
+$prefix = $rootTrimmed + [IO.Path]::DirectorySeparatorChar
+$isInside = $targetTrimmed -eq $rootTrimmed -or $targetTrimmed.StartsWith($prefix, [System.StringComparison]::OrdinalIgnoreCase)
 
-if ($relativeTarget -eq '..' -or $relativeTarget.StartsWith('../') -or $relativeTarget.StartsWith($outsidePrefix)) {
+if (-not $isInside) {
     throw "虚拟环境必须位于当前工作区内：$workspaceRoot"
 }
 if (-not (Test-Path -LiteralPath $requirementsPath -PathType Leaf)) {
@@ -46,7 +48,7 @@ if ($LASTEXITCODE -ne 0) {
     throw '安装 Kokoro 项目依赖失败'
 }
 
-& $venvPython -c 'import kokoro_onnx, soundfile; print("Kokoro Python 依赖验证通过")'
+& $venvPython -c 'import kokoro_onnx, soundfile; print('kokoro deps import OK')'
 if ($LASTEXITCODE -ne 0) {
     throw 'Kokoro 依赖安装完成，但导入验证失败'
 }

@@ -14,7 +14,7 @@
 // by the CLI — see the note above.
 
 import { spawn, spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -530,7 +530,19 @@ export async function synthesizeOne({
   }
   const spawn = deps.spawnP ?? spawnP;
   const r = await spawn(invocation.cmd, invocation.args, { cwd: hyperframesDir });
-  return synthResult(r, wavAbs, invocation.label);
+  if (r.status !== 0 || !existsSync(wavAbs)) {
+    return synthResult(r, wavAbs, invocation.label);
+  }
+  // kokoro 输出默认 24kHz；harness 时间轴期望 44.1kHz mono（与 IndexTTS2/HeyGen 分支一致），
+  // 否则 ffmpeg concat 混拼异采样率会让旁白总时长偏移，触发时长校验失败。
+  const tmpWav = `${wavAbs}.44k.wav`;
+  const conv = await spawn("ffmpeg", ["-y", "-loglevel", "error", "-i", wavAbs, "-ar", "44100", "-ac", "1", "-c:a", "pcm_s16le", tmpWav], { stdio: "ignore", windowsHide: true });
+  if (conv.status !== 0 || !existsSync(tmpWav)) {
+    return { ok: false, words: null, error: `${invocation.label} 44.1kHz 转码失败` };
+  }
+  rmSync(wavAbs, { force: true });
+  renameSync(tmpWav, wavAbs);
+  return { ok: true, words: null };
 }
 
 // Shape a spawn result into { ok, words, error }, naming why on failure so the
