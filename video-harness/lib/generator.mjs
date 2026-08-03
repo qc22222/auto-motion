@@ -4,6 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { finished } from "node:stream/promises";
 import { fileURLToPath } from "node:url";
 import { buildScenes } from "./scenes.mjs";
+import { mapWithConcurrency } from "./concurrency.mjs";
 import { ensureDir, hashValue, nowIso, writeJson } from "./fs-utils.mjs";
 import { loadProjectModel } from "./model.mjs";
 import { setSceneStage, setStage } from "./state.mjs";
@@ -13,6 +14,12 @@ const HARNESS_ROOT = resolve(HERE, "..");
 const WORKSPACE_ROOT = resolve(HARNESS_ROOT, "..");
 const DEFAULT_RUNNER = join(HARNESS_ROOT, "scripts", "claude-scene-runner.mjs");
 const SHARED_TEMPLATE_ROOT = join(WORKSPACE_ROOT, "exampleFolder");
+
+const DEFAULT_SCENE_CONCURRENCY = 3;
+function sceneConcurrency(options) {
+  const n = Number(options.concurrency ?? process.env.HYPERFRAMES_SCENE_CONCURRENCY ?? "");
+  return Number.isFinite(n) && n >= 1 ? Math.floor(n) : DEFAULT_SCENE_CONCURRENCY;
+}
 
 function selectedScenes(model, sceneId) {
   if (!sceneId) return model.storyboard.scenes;
@@ -87,14 +94,16 @@ function runRunner(runner, requestPath, sceneRoot, options = {}) {
 export async function generateScenes(projectRoot, options = {}) {
   const runner = resolve(options.runner || process.env.VIDEO_HARNESS_SCENE_RUNNER || DEFAULT_RUNNER);
   if (!existsSync(runner)) throw new Error(`找不到场景生成器：${runner}`);
+  const concurrency = sceneConcurrency(options);
 
   // build 的默认分支只准备工程和任务单，不会改变原黑箱的创作方式。
   buildScenes(projectRoot, { sceneId: options.sceneId });
   const model = loadProjectModel(projectRoot);
   const scenes = selectedScenes(model, options.sceneId);
-  const results = [];
 
-  for (const scene of scenes) {
+  // 准备阶段：为每个场景构建完全等价的 request（与串行时逐字节一致），
+  // 并统一标记 running；请求内容不受并发影响。
+  const prepared = scenes.map((scene) => {
     const sceneRoot = join(model.root, "scenes", scene.id);
     const request = {
       schemaVersion: 1,
@@ -120,7 +129,14 @@ export async function generateScenes(projectRoot, options = {}) {
       inputHash,
       generator: { runner, request: requestPath, startedAt: nowIso() },
     });
+    return { scene, requestPath, sceneRoot };
+  });
 
+  // 并发执行阶段：有界并发（默认 3，HYPERFRAMES_SCENE_CONCURRENCY 可配）。
+  // 失败隔离：单个场景失败只标记自身，不中断其他场景；全部结束后统一汇总。
+  const results = [];
+  const failures = [];
+  await mapWithConcurrency(prepared, concurrency, async ({ scene, requestPath, sceneRoot }) => {
     try {
       const logs = await runRunner(runner, requestPath, sceneRoot, {
         projectRoot: model.root,
@@ -140,10 +156,15 @@ export async function generateScenes(projectRoot, options = {}) {
       results.push({ ...accepted, generator });
     } catch (error) {
       setSceneStage(model.root, scene.id, "failed", { error: error.message });
-      setStage(model.root, "scenes", "failed", { error: error.message });
-      throw error;
+      failures.push({ sceneId: scene.id, error: error.message });
     }
-  }
+  });
 
+  if (failures.length > 0) {
+    setStage(model.root, "scenes", "failed", {
+      error: failures.map((f) => `${f.sceneId}: ${f.error}`).join("；"),
+    });
+    throw new Error(`场景生成失败：${failures.map((f) => f.sceneId).join("、")}`);
+  }
   return results;
 }
