@@ -1,0 +1,12 @@
+{
+  "name": "local-video-harness",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "video-harness": "bin/video-harness.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "doctor": "node bin/video-harness.mjs doctor"
+  }
+}
