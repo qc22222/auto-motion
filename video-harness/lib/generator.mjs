@@ -7,7 +7,7 @@ import { buildScenes } from "./scenes.mjs";
 import { mapWithConcurrency } from "./concurrency.mjs";
 import { ensureDir, hashValue, nowIso, writeJson } from "./fs-utils.mjs";
 import { loadProjectModel } from "./model.mjs";
-import { setSceneStage, setStage } from "./state.mjs";
+import { loadState, setSceneStage, setStage } from "./state.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const HARNESS_ROOT = resolve(HERE, "..");
@@ -97,13 +97,25 @@ export async function generateScenes(projectRoot, options = {}) {
   const concurrency = sceneConcurrency(options);
 
   // build 的默认分支只准备工程和任务单，不会改变原黑箱的创作方式。
-  buildScenes(projectRoot, { sceneId: options.sceneId });
+  // 只处理尚未 complete 的场景（幂等：已完成的场景不重跑，也不被失效）。
+  const model0 = loadProjectModel(projectRoot);
+  const state0 = loadState(projectRoot);
+  const scenes = selectedScenes(model0, options.sceneId).filter(
+    (scene) => state0.sceneStates[scene.id]?.status !== "complete",
+  );
+  if (scenes.length === 0) return [];
+  for (const scene of scenes) {
+    buildScenes(projectRoot, { sceneId: scene.id });
+  }
   const model = loadProjectModel(projectRoot);
-  const scenes = selectedScenes(model, options.sceneId);
 
   // 准备阶段：为每个场景构建完全等价的 request（与串行时逐字节一致），
   // 并统一标记 running；请求内容不受并发影响。
-  const prepared = scenes.map((scene) => {
+  // 注意：duration 等字段必须以 buildScenes(compile) 重算后的 model 为准。
+  const pendingScenes = model.storyboard.scenes.filter(
+    (scene) => state0.sceneStates[scene.id]?.status !== "complete",
+  );
+  const prepared = pendingScenes.map((scene) => {
     const sceneRoot = join(model.root, "scenes", scene.id);
     const request = {
       schemaVersion: 1,

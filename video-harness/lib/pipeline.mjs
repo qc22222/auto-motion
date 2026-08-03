@@ -64,15 +64,16 @@ export async function advanceProject(projectRoot, options = {}) {
   const scenesToGenerate = model.storyboard.scenes.filter(
     (scene) => state.sceneStates[scene.id]?.status !== "complete",
   );
-  for (const scene of scenesToGenerate) {
+  if (scenesToGenerate.length > 0) {
+    // 一次调用并行生成所有待生成场景（generateScenes 内部按状态过滤，
+    // 已 complete 的场景不会被重跑；HYPERFRAMES_SCENE_CONCURRENCY 控制并发度）。
     await generateScenes(projectRoot, {
-      sceneId: scene.id,
       runner: options.runner,
       model: options.model,
       timeoutMs: options.timeoutMs,
       echo: options.echo,
     });
-    actions.push(`generate:${scene.id}`);
+    actions.push(`generate:${scenesToGenerate.map((scene) => scene.id).join(",")}`);
   }
 
   generateReview(projectRoot);
