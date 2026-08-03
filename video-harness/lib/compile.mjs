@@ -410,9 +410,9 @@ function writeSceneArtifacts(model, scene, schedule, revisions) {
   };
   const state = loadState(root);
   const previousScene = state.sceneStates[scene.id];
-  // 生成中的场景(running)不被 compile 的 inputHash 检测误标 stale：
-  // 并行生成时,一个场景完成触发的 compileProject 不能覆盖其他正在生成的场景。
-  if (previousScene?.status === "running") return inputHash;
+  // 生成中的场景(running)与失败场景(failed)不被 compile 的 inputHash 检测误标 stale：
+  // 并行生成时,一个场景完成触发的 compileProject 不能覆盖其他正在生成/已失败的场景。
+  if (previousScene && ["running", "failed"].includes(previousScene.status)) return inputHash;
   const previousHash = previousScene?.inputHash;
   if (previousHash && previousHash !== inputHash) setSceneStage(root, scene.id, "stale", { inputHash });
   else if (!previousScene) setSceneStage(root, scene.id, "ready", { inputHash });

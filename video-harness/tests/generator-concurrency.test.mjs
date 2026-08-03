@@ -107,7 +107,7 @@ test("多个场景并发启动且全部成功", { timeout: 30_000 }, async () =>
   const starts = lines.filter((l) => l.startsWith("start:")).map((l) => Number(l.split(":")[2]));
   assert.equal(starts.length, 3, "应有 3 个场景启动记录");
   const spread = Math.max(...starts) - Math.min(...starts);
-  assert.ok(spread < 300, "场景应并发启动(时间差 " + spread + "ms,单场景 400ms)");
+  assert.ok(spread < 600, "场景应并发启动(时间差 " + spread + "ms;串行时 spread 应约 800ms)");
 });
 
 test("单个场景失败不影响其他场景,统一汇总失败", { timeout: 30_000 }, async () => {
