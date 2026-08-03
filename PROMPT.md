@@ -19,10 +19,19 @@
 为每个镜头创建独立目录，建议使用 `scenes/scene-001`、`scenes/scene-002` 这样的命名。目录结构参考 `exampleFolder`，至少包含：
 
 - `.claude/`：放置 hyperframes 相关 skills 或项目指令。
+- `hyperframes-local.ps1`：Windows 中文路径安全入口，从模板原样复制。
 - `run-claude-ai.sh`：从模板复制后按当前镜头填写。
 - `transcription.srt`：复制完整字幕文件，供 Claude AI 理解整体上下文。
 
 `run-claude-ai.sh` 模板中已有镜头编号、镜头时长、输出文件名、完整字幕路径和镜头文案等字段；先阅读模板，再为当前镜头填写这些字段。可以改写模板中的 `PROMPT` 内容来强化当前镜头的表达，但必须保留上述字段、阶段性汇报规则和交付约束。
+
+Windows 中文路径下禁止直接执行 `npx hyperframes init`。创建动画工程必须使用镜头目录中的安全入口：
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./hyperframes-local.ps1 init videos/<project> --example=blank --resolution=portrait --skill=general-video
+```
+
+后续 `lint`、`check`、`snapshot`、`preview`、`render` 也通过生成工程内的 `hyperframes-local.ps1` 执行。不得运行 `hyperframes skills`，不得向用户级或全局目录安装技能。
 
 ## 调度和等待
 

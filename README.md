@@ -86,6 +86,8 @@ qwen 3.8则负责写react代码
 
 `exampleFolder/.claude/skills/` 中包含 HyperFrames 相关技能。Claude Code 会基于这些技能编写 HTML 动画项目，并渲染 1080x1440、30fps、静音、无音轨的 MP4。
 
+Windows 中文路径下必须通过 `exampleFolder/hyperframes-local.ps1` 初始化和调用 HyperFrames，禁止直接执行 `npx hyperframes init`。该纯 PowerShell 安全入口使用项目本地缓存并阻止全局技能安装。
+
 ### 4. 验收层：auto-test
 
 `auto-test/run.sh` 提供端到端测试入口。它会创建临时工作区，复制测试字幕和模板，调用 Codex 执行完整流程，然后用 `auto-test/validate.sh` 检查：
@@ -181,6 +183,7 @@ bash auto-test/run.sh
 ├── transcription.srt            # 输入字幕文件
 ├── exampleFolder/
 │   ├── run-claude-ai.sh          # 单镜头 Claude Code 调用模板
+│   ├── hyperframes-local.ps1      # Windows 中文路径安全入口
 │   └── .claude/skills/           # HyperFrames 相关技能
 ├── auto-test/
 │   ├── run.sh                    # 端到端测试入口

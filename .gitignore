@@ -6,3 +6,14 @@ auto-test/.tmp/
 auto-hyper-/resources/*
 !auto-hyper-/resources/codex.svg
 !auto-hyper-/resources/github.svg
+
+# 杩愯浜х墿涓庡疄楠岃褰?2026-08-03 P1 宸ョ▼娌荤悊)
+/runs/
+
+# .codex 缂撳瓨鏁翠綋蹇界暐,浠呯櫧鍚嶅崟鍏ュ簱椤圭洰璁板繂
+/.codex/*
+!/.codex/PROJECT_MEMORY.md
+
+# Python 编译缓存
+__pycache__/
+*.pyc
