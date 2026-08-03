@@ -59,3 +59,18 @@
 - 测试基线：`video-harness` 41 项、音频技能 55 项全部通过；`setup-indextts2.ps1 -VerifyOnly` 端到端校验通过。
 - 待用户输入：本人授权参考音频（指南见根目录 `参考音频录制指南.md`），放入视频项目 `assets/reference/` 后执行 `audio-check` → `audio` 完成真实音色验收。
 - 工程风险：全部改动仍未提交 git（仓库只有 1 个历史 commit），应尽快分批入库。
+
+## Kokoro 本地默认音色链路(2026-08-03 启用)
+
+- kokoro-onnx 0.5.0 装在 `.codex/python-audio`(setup-kokoro.ps1 创建)。
+- 用户级环境变量:`HYPERFRAMES_PYTHON`、`HYPERFRAMES_WHISPER_PATH`(setx 已设置)。
+- 中文路径炸弹新增一例:espeak-ng 数据目录被 dll 硬编码为构建路径,且 ANSI API 读不了中文路径 → `espeakng_loader/get_data_path()` 已打补丁优先用 `E:/models/espeak-ng-data`(ASCII 副本)。
+- 已修 bug:kokoro 输出 24kHz 导致 harness 旁白时长校验失败 → `tts.mjs` kokoro 分支补 44.1kHz 转码;`setup-kokoro.ps1` 修 GetRelativePath(.NET Framework)与中文 print 编码两处。
+- 测试基线:音频技能 55 项全绿。commit `f764f62`。
+
+## 克隆音色参数(2026-08-03 用户确认)
+
+- 参考音频:`视频创作自动化流水线实践.mp3`(11.5s)→ 各项目 `assets/reference/owner.wav`(volume 3dB 增益,44.1k mono)。
+- voice-profile 关键参数:`provider=indextts2`、`speed=1.1`、`direction=热情、明快、有感染力、元气满满、精神饱满`、`emotionMode=delivery`、`emotionWeight=0.8`。
+- 旧参考音频(养老金...mp3)响度过低(-23dB、LRA 1.4)导致克隆低沉,已弃用;源 mp3 在项目根目录未入库,建议移入各项目 `assets/reference/`。
+- 待办:新音色(11.47s)与旧场景时长不匹配,正式成片需重新生成场景(Claude Code ~40min)或下次新建项目直接使用。
