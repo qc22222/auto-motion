@@ -1,14 +1,23 @@
 # webpage — category module (search-driven)
 
-**Animate a webpage / link** (the "website animation" use case). Search-driven: the user gives or names a URL → fetch/capture it → animate it (scroll-through, UI reveal, cursor demo, region callouts). Distinct from captioning an existing _video file_ (that's `/embedded-captions`); here the source is a _web page_ and the output is a short, unnarrated highlight shot.
+**Animate a webpage / link** (the "website animation" use case). Search-driven: the user gives or names a URL → fetch/capture it → animate it (scroll-through, UI reveal, cursor demo, region callouts). Distinct from captioning an existing _video file_ (that's `/embedded-captions`) and from a narrated video _of_ a site (that's a `/product-launch-video` site-tour ask); here the source is a _web page_ and the output is a short, unnarrated highlight shot.
 
 ## Source (Step 2)
 
-Fetch the page via `hyperframes capture` (DOM + screenshots) or a provided screenshot → frozen project-local image(s)/DOM. `asset_needs`: `{ kind: web, source: <url>, treatment: none }`.
+Fetch the page via `hyperframes capture --json` (DOM + screenshots) or a provided screenshot → frozen project-local image(s)/DOM. `asset_needs`: `{ kind: web, source: <url>, treatment: none }`.
+
+Inspect the capture result before building. If `BLOCKED.md` exists, JSON reports `ok: false`, or the
+command exits non-zero, stop the URL-capture path and report the reason. Continue with a provided
+screenshot only when it was an explicit source from the user (or the user explicitly chooses it
+after the failure). Do not animate a blocked partial capture, invent missing DOM, or eyeball element
+coordinates from protection/challenge pages.
+
+This web need cannot use the generic asset-free fallback: it requires a usable captured screenshot
+or DOM, or a provided screenshot explicitly selected by the user. If none is available, stop.
 
 ## Vocabulary / leans on
 
-- Rules: `hyperframes-motion/rules/{3d-page-scroll, demo-page-scroll-spotlight, cursor-click-ripple, coordinate-target-zoom, viewport-change}`.
+- Rules: `hyperframes-animation/rules/{3d-page-scroll, demo-page-scroll-spotlight, cursor-click-ripple, coordinate-target-zoom, viewport-change}`.
 - Primitives: scroll pan · spotlight/dim · cursor move + click-ripple · zoom-to-region · callout pin + label.
 
 ## Build (reuse-first)

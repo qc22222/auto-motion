@@ -13,7 +13,7 @@ Named primitives the Director references in `motion` strings and the Builder imp
 | `fade_blur`                   | `from({ opacity:0, filter:"blur(14px)" })`                     | cinematic, dreamy         |
 | `typewriter`                  | reveal via clip/`SplitText` width step                         | technical, narrative      |
 | `word_reveal`                 | per-word `from({opacity:0,y:..}, stagger:.1)`                  | storytelling              |
-| `wave`                        | per-letter `from({y:..}, stagger:{each:.04})`                  | flowing, rhythmic         |
+| `wave`                        | per-letter `from({y:..}, stagger:{each:.04})`                  | flowing, musical          |
 | `bounce_in`                   | `from({y:-120}, ease:"bounce.out")`                            | playful                   |
 | `slam`                        | `from({ y:-300, ease:"power4.out" })` + shake on land          | impact, heavy             |
 

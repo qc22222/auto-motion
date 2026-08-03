@@ -1,11 +1,11 @@
 # source phase — asset sourcing (asset-first)
 
-Runs **only when `shot-plan.json.asset_needs` is non-empty** (the form categories never reach here). Sources each needed asset → a **frozen project-local path** + a ledger (`assets/index.md`). Uses `/hyperframes-media` (capture / asset prep) plus available asset search. If no such search capability is available, it **degrades to asset-free** (see below).
+Runs **only when `shot-plan.json.asset_needs` is non-empty** (the form categories never reach here). Sources each needed asset → a **frozen project-local path** + a ledger (`assets/index.md`). Uses `/media-use` (capture / asset prep) plus, **when an external asset-search skill such as media-use is installed**, its `resolve` step. If no such search capability is available, it **degrades to asset-free** (see below).
 
 ## Per asset_need
 
-- `image / icon / logo / svg` → asset search: **search** (asset_scout: Google Images / SerpAPI + Noun Project), **generate** (image model), or **user-supplied** (logo). Optional `treatment`: cutout (remove-bg) / recolor / vectorize.
-- `news / web / tweet` → **RWA-style search** (two-pole queries: **atomic** (1–3 words, composable) or **specific** (5–15 words: a news event / tweet); never the middle. A failed specific query is dropped, not broadened.
+- `image / icon / logo / svg` → media-use `resolve`: **search** (asset_scout: Google Images / SerpAPI + Noun Project), **generate** (image model), or **user-supplied** (logo). Optional `treatment`: cutout (remove-bg) / recolor / vectorize.
+- `news / web / tweet` → **RWA-style search** (media-use's documented lineage — `media-use/references/search-strategy.md` traces `resolve` to the RWA subagent). Two-pole queries: **atomic** (1–3 words, composable) or **specific** (5–15 words: a news event / tweet); never the middle. A failed specific query is dropped, not broadened.
 
 ## Steps
 
@@ -18,4 +18,4 @@ Runs **only when `shot-plan.json.asset_needs` is non-empty** (the form categorie
 
 If a provider / search is unavailable, mark the need unmet in `context.log`; the category falls back to asset-free where possible (e.g. `news` → typographic headline without the sourced image).
 
-> Illustrative: `(cd "$PROJECT_DIR" && node <SKILL_DIR>/phases/source/resolve.mjs --plan ./shot-plan.json --out ./assets)`.
+> Illustrative: `(cd "$PROJECT_DIR" && node <SKILL_DIR>/phases/source/resolve.mjs --plan ./shot-plan.json --out ./assets)` — or drive media-use's `resolve` procedure directly.

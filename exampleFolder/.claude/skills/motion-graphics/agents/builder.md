@@ -7,7 +7,7 @@ Turn `shot-plan.json` into one renderable HyperFrames composition (`compositions
 Default = **compose existing catalog capabilities, not hand-author**:
 
 - `npx hyperframes add <block>` (registry) → customize in place. Most blocks bake content/data into their own script (only a few expose CSS-var params), so reuse = **add + edit**.
-- `hyperframes-motion` rules / blueprints / transitions for motion; runtime adapters (GSAP default).
+- `hyperframes-animation` rules / blueprints / transitions for motion; runtime adapters (GSAP default).
 
 Hand-author only (a) gaps no block/rule covers, (b) the `asset-fusion` affordance binding. The Director named the block(s) + customizations in `shot-plan.json` (`content.block` + `content.customize`); see `catalog-map.md`.
 
@@ -21,7 +21,7 @@ Hand-author only (a) gaps no block/rule covers, (b) the `asset-fusion` affordanc
 
 ## Layout before animation
 
-Build the **hero-frame end-state** in CSS first (flex + padding; never absolute offsets on content containers; the root must be sized). Then `gsap.from()` entrances INTO it; exits via transitions or the final scene. Full rules: `references/builder-contract.md`.
+Build the **hero-frame end-state** in CSS first (flex + padding; never absolute offsets on content containers; the root must be sized). Use `fromTo()` for elements inside `.clip` and for any delayed entrance; `from()` is safe only for non-clip elements active from `t=0`. Exits belong to transitions or the final scene. Full rules: `references/builder-contract.md`.
 
 ## IR → composition
 
@@ -33,8 +33,8 @@ Build the **hero-frame end-state** in CSS first (flex + padding; never absolute 
 
 ## Critical correctness (GSAP / seek)
 
-Opacity-gate delayed elements (set hidden until their entrance). Clamp at tween bounds (no overshoot past a held value). Allowed eases: `power1–4`, `back`, `bounce`, `circ`, `elastic`, `expo`, `sine` (`.in/.out/.inOut`). One motif per scene. Run `hyperframes inspect` for overflow / collisions.
+Opacity-gate delayed elements (set hidden until their entrance). Clamp at tween bounds (no overshoot past a held value). Allowed eases: `power1–4`, `back`, `bounce`, `circ`, `elastic`, `expo`, `sine` (`.in/.out/.inOut`). One motif per scene. Run `hyperframes check` for overflow / collisions.
 
-## Verify-fix
+## Hand off for verification
 
-`hyperframes lint` → `inspect` → `render -q draft`. On failure, fix the offending element + re-run. **Never change a fixed `data-duration` during repair.**
+Self-check the authored file, then return it to the orchestrator. Step 5 runs `hyperframes lint`, `hyperframes check`, and proof snapshots on the assembled project. Do not render. When redispatched with a finding, fix the offending element and never change a fixed `data-duration` during repair. Remotion-source migrations use `/remotion-to-hyperframes` and its SSIM harness instead.

@@ -51,6 +51,9 @@ ${SCENE_TEXT}
 
 实现要求：
 - 使用 hyperframes 完成实现和渲染，可结合 GSAP 等动效库。
+- Windows 中文路径下禁止直接运行 npx hyperframes init。必须先执行：powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./hyperframes-local.ps1 init videos/${SCENE_ID} --example=blank --resolution=portrait --skill=general-video --duration=${SCENE_DURATION_SECONDS}
+- 进入生成的工程后，lint、check、snapshot、preview、render 都使用工程内的 powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./hyperframes-local.ps1 命令，不要绕过安全入口。
+- 禁止运行 hyperframes skills 或安装全局技能；只使用当前目录 .claude/skills 中已经配好的技能。
 - 动画必须可按任意帧独立计算，避免依赖渲染顺序、Date.now()、运行时随机数或运行时网络请求。
 - 必须渲染完整的 ${SCENE_DURATION_SECONDS} 秒；文案结束后的剩余时间也要保留为停顿、收尾或转场，不要提前裁剪。
 - 视觉复杂度服务于文案，不要为了炫技拉长开发和渲染时间。
