@@ -6,7 +6,8 @@ import test from "node:test";
 import { readJson, writeJson } from "../lib/fs-utils.mjs";
 import { createProject } from "../lib/model.mjs";
 import { generateScenes } from "../lib/generator.mjs";
-import { loadState } from "../lib/state.mjs";
+import { compileProject } from "../lib/compile.mjs";
+import { loadState, setSceneStage } from "../lib/state.mjs";
 
 // 构造三场景项目 fixture:script 3 段 + storyboard 3 场景。
 function buildThreeSceneProject(parent) {
@@ -143,4 +144,21 @@ test("并发度 1 时退化为串行执行", { timeout: 30_000 }, async () => {
   const starts = lines.filter((l) => l.startsWith("start:")).map((l) => Number(l.split(":")[2]));
   const spread = Math.max(...starts) - Math.min(...starts);
   assert.ok(spread >= 300, "并发度 1 时应串行启动(时间差 " + spread + "ms)");
+});
+
+test("compile 不把 running 场景误标 stale(并行竞态回归)", { timeout: 30_000 }, () => {
+  const parent = mkdtempSync(join(tmpdir(), "vh-conc-race-"));
+  const root = buildThreeSceneProject(parent);
+  compileProject(root);
+  const before = loadState(root);
+  assert.notEqual(before.sceneStates["scene-001"].status, "running");
+  // 模拟生成中:场景 running,且 inputHash 与 compile 重算值不同
+  setSceneStage(root, "scene-001", "running", { inputHash: "fake-input-hash-different" });
+  compileProject(root);
+  const after = loadState(root);
+  assert.equal(
+    after.sceneStates["scene-001"].status,
+    "running",
+    "并行生成中的场景不应被 compile 的 inputHash 检测误标 stale",
+  );
 });
