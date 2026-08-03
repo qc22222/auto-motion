@@ -136,11 +136,12 @@ function safeConsolePath(pathname) {
   }
   if (!relativePath) relativePath = "index.html";
   const path = resolve(CONSOLE_ROOT, relativePath);
+  // 先做存在性与类型检查,缺失资源返回 null(→404),避免 realpathSync 抛异常变成 400。
+  if (!existsSync(path) || !statSync(path).isFile()) return null;
   const realRoot = realpathSync(CONSOLE_ROOT);
   const realPath = realpathSync(path);
   const rel = relative(realRoot, realPath);
   if (rel.startsWith("..") || isAbsolute(rel)) return null;
-  if (!existsSync(path) || !statSync(path).isFile()) return null;
   return realPath;
 }
 

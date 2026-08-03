@@ -51,7 +51,7 @@
       const audio = $("scriptAudio");
       if (audio) {
         const first = segments[0];
-        if (first) audio.src = "assets/voice/" + first.id + ".wav";
+        if (first) audio.src = "/assets/voice/" + first.id + ".wav";
         const voiceChecks = document.querySelector('.work-panel[data-work-panel="script"] .check-list');
         if (voiceChecks) {
           voiceChecks.querySelectorAll(".check-item").forEach((el) => el.remove());
@@ -90,7 +90,7 @@
         const selectScene = (id) => {
           sceneGrid.querySelectorAll(".scene-card").forEach((c) => c.classList.toggle("active", c.dataset.sceneId === id));
           const src = player ? player.querySelector("source") : null;
-          if (src) { src.src = "renders/" + id + ".mp4"; player.load(); }
+          if (src) { src.src = "/renders/" + id + ".mp4"; player.load(); }
         };
         sceneGrid.querySelectorAll(".scene-card").forEach((card) => {
           card.addEventListener("click", () => selectScene(card.dataset.sceneId));
@@ -110,7 +110,7 @@
       if (captionPanel) {
         let captions = [];
         try {
-          const raw = await (await fetch("captions/captions.json", { cache: "no-store" })).json();
+          const raw = await (await fetch("/captions/captions.json", { cache: "no-store" })).json();
           captions = raw.groups || raw;
         } catch { captions = []; }
         captionPanel.querySelectorAll(".content-row").forEach((el) => el.remove());

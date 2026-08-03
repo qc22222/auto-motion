@@ -65,7 +65,7 @@
       --container-gutter-phone: 12px;
     }
   </style>
-  <link rel="stylesheet" href="assets/workbench.css" />
+  <link rel="stylesheet" href="/console/assets/workbench.css" />
 </head>
 <body data-page="delivery">
   <header class="app-topbar" data-od-id="topnav">
@@ -77,13 +77,13 @@
   </header>
 
   <main class="page">
-    <section class="page-head" data-od-id="delivery-heading"><div><p class="eyebrow">视频 Harness 工作流演示 / 审阅与交付</p><h1>最终成片与交付文件</h1><p>先确认最终审阅与渲染结果，再下载视频和字幕附件。</p></div><div class="topbar-actions"><a class="btn btn-secondary" href="workspace.html?stage=review">返回最终审阅</a><a class="btn btn-primary" href="assets/delivery/final.mp4" download="video-harness-final.mp4">下载最终成片</a></div></section>
+    <section class="page-head" data-od-id="delivery-heading"><div><p class="eyebrow">视频 Harness 工作流演示 / 审阅与交付</p><h1>最终成片与交付文件</h1><p>先确认最终审阅与渲染结果，再下载视频和字幕附件。</p></div><div class="topbar-actions"><a class="btn btn-secondary" href="workspace.html?stage=review">返回最终审阅</a><a class="btn btn-primary" href="/delivery/final.mp4" download="video-harness-final.mp4">下载最终成片</a></div></section>
 
     <section class="delivery-layout" data-od-id="delivery-workspace">
       <article class="surface-raised delivery-preview">
         <div class="section-head"><div><h2>成片预览</h2><p>交付文件来自演示项目的实际 assemble 产物。</p></div><span class="tag mono">final.mp4</span></div>
-        <div class="delivery-video"><video controls poster="assets/video-cover.jpg" preload="metadata"><source src="assets/delivery/final.mp4" type="video/mp4" />当前浏览器无法播放视频。</video></div>
-        <div class="delivery-toolbar"><div><strong>竖屏短视频 · H.264 + AAC</strong><span class="mono">540 × 960 · 30 FPS · 17.133 秒</span></div><div class="topbar-actions"><button class="btn btn-secondary" type="button" data-dialog-open="rebuildDialog">重新生成交付包</button><a class="btn btn-quiet" href="assets/delivery/final.mp4" download="video-harness-final.mp4">下载 MP4</a></div></div>
+        <div class="delivery-video"><video controls  preload="metadata"><source src="/delivery/final.mp4" type="video/mp4" />当前浏览器无法播放视频。</video></div>
+        <div class="delivery-toolbar"><div><strong>竖屏短视频 · H.264 + AAC</strong><span class="mono">540 × 960 · 30 FPS · 17.133 秒</span></div><div class="topbar-actions"><button class="btn btn-secondary" type="button" data-dialog-open="rebuildDialog">重新生成交付包</button><a class="btn btn-quiet" href="/delivery/final.mp4" download="video-harness-final.mp4">下载 MP4</a></div></div>
       </article>
 
       <aside class="side-stack" aria-label="交付检查与文件">
@@ -91,7 +91,7 @@
 
         <article class="surface side-card"><div class="side-card-head"><h2>渲染检查</h2><span class="status success">通过</span></div><div class="check-list"><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>视频流有效</strong><span>H.264 · yuv420p · 540 × 960</span></div></div><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>音频流有效</strong><span>AAC · 含旁白 · 无背景音乐</span></div></div><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>时长检查通过</strong><span class="mono">17.133 秒</span></div></div></div></article>
 
-        <article class="surface side-card"><div class="side-card-head"><h2>交付文件</h2><span class="tag mono">4 个</span></div><div class="file-list"><a class="file-row" href="assets/delivery/final.mp4" download="video-harness-final.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m10 8 6 4-6 4V8Z"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg><span><strong>final.mp4</strong><span>最终成片 · 竖屏</span></span><span class="mono">下载</span></a><a class="file-row" href="assets/delivery/captions.srt" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h10l4 4v14H5zM15 3v5h5M8 12h8M8 16h6"/></svg><span><strong>captions.srt</strong><span>通用字幕附件</span></span><span class="mono">下载</span></a><a class="file-row" href="assets/delivery/captions.vtt" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h10l4 4v14H5zM15 3v5h5M8 12h8M8 16h6"/></svg><span><strong>captions.vtt</strong><span>网页字幕附件</span></span><span class="mono">下载</span></a><a class="file-row" href="assets/delivery/captions.ass" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h10l4 4v14H5zM15 3v5h5M8 12h8M8 16h6"/></svg><span><strong>captions.ass</strong><span>带样式字幕附件</span></span><span class="mono">下载</span></a></div></article>
+        <article class="surface side-card"><div class="side-card-head"><h2>交付文件</h2><span class="tag mono">4 个</span></div><div class="file-list"><a class="file-row" href="/delivery/final.mp4" download="video-harness-final.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m10 8 6 4-6 4V8Z"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg><span><strong>final.mp4</strong><span>最终成片 · 竖屏</span></span><span class="mono">下载</span></a><a class="file-row" href="/delivery/captions.srt" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h10l4 4v14H5zM15 3v5h5M8 12h8M8 16h6"/></svg><span><strong>captions.srt</strong><span>通用字幕附件</span></span><span class="mono">下载</span></a><a class="file-row" href="/delivery/captions.vtt" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h10l4 4v14H5zM15 3v5h5M8 12h8M8 16h6"/></svg><span><strong>captions.vtt</strong><span>网页字幕附件</span></span><span class="mono">下载</span></a><a class="file-row" href="/delivery/captions.ass" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h10l4 4v14H5zM15 3v5h5M8 12h8M8 16h6"/></svg><span><strong>captions.ass</strong><span>带样式字幕附件</span></span><span class="mono">下载</span></a></div></article>
       </aside>
     </section>
   </main>
@@ -101,7 +101,7 @@
   <script src="console-api.js"></script>
   <script src="console-ui.js"></script>
   <script>
-// ── OpenDesign 交付页接线(真实数据,2026-08-03)──────────────────────────
+// ── OpenDesign 交付页接线(真实数据,2026-08-03 修订)──────────────────────
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id);
@@ -132,17 +132,19 @@
         badge.className = "status " + (done ? "success" : "pending");
       }
 
-      // 视频源
+      // 视频源(站点根绝对路径;移除不存在的 poster)
       const video = document.querySelector(".delivery-video video");
-      const videoSrc = video ? video.querySelector("source") : null;
-      if (project.delivery?.exists) {
-        if (videoSrc) videoSrc.src = "delivery/final.mp4";
-        if (video) video.load();
-      } else if (video) {
-        video.style.opacity = "0.4";
+      if (video) {
+        video.removeAttribute("poster");
+        if (project.delivery?.exists) {
+          video.src = "/delivery/final.mp4";
+          video.load();
+        } else {
+          video.style.opacity = "0.4";
+        }
       }
 
-      // 工具条:编码/分辨率/时长/字幕
+      // 工具条
       const toolbar = document.querySelector(".delivery-toolbar strong");
       const toolbarMono = document.querySelector(".delivery-toolbar .mono");
       const render = project.project.render || {};
@@ -157,25 +159,33 @@
           + (render.burnCaptions ? " · 字幕已烧录" : "");
       }
 
-      // 交付文件列表(manifest)
-      const fileList = document.querySelector(".delivery-file-list");
-      if (fileList && project.delivery?.manifest?.video) {
+      // 交付文件列表:容器 .file-list,优先按 manifest.files 生成
+      const fileList = document.querySelector(".file-list");
+      if (fileList) {
         fileList.replaceChildren();
-        const rows = [
-          ["最终成片", "delivery/final.mp4"],
-          ["交付清单", "delivery/manifest.json"],
-          ["字幕 SRT", "delivery/captions.srt"],
-          ["字幕 VTT", "delivery/captions.vtt"],
-          ["字幕 ASS", "delivery/captions.ass"],
-        ];
-        rows.forEach(([name, rel]) => {
-          const row = document.createElement("a");
-          row.className = "file-row";
-          row.href = rel;
-          row.download = rel.split("/").pop();
-          row.innerHTML = '<span><strong>' + name + "</strong><span class=\"mono\">" + rel + "</span></span><span>下载</span>";
-          fileList.appendChild(row);
-        });
+        const files = (project.delivery?.manifest?.files) || [];
+        const labels = {
+          "final.mp4": "最终成片",
+          "captions.srt": "字幕 SRT",
+          "captions.vtt": "字幕 VTT",
+          "captions.ass": "字幕 ASS",
+          "manifest.json": "交付清单",
+        };
+        if (files.length === 0) {
+          const empty = document.createElement("p");
+          empty.className = "task-empty";
+          empty.textContent = "尚无交付文件。";
+          fileList.appendChild(empty);
+        } else {
+          files.forEach((file) => {
+            const row = document.createElement("a");
+            row.className = "file-row";
+            row.href = "/delivery/" + encodeURIComponent(file);
+            row.download = file;
+            row.innerHTML = '<span><strong>' + (labels[file] || file) + "</strong><span class=\"mono\">/delivery/" + file + "</span></span><span>下载</span>";
+            fileList.appendChild(row);
+          });
+        }
       }
 
       // 重建交付包按钮 → pipeline advance(轮询)
@@ -207,6 +217,6 @@
   })();
 })();
 
-  </script>
+</script>
 </body>
 </html>
