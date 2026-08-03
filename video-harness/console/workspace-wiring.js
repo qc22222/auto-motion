@@ -89,8 +89,8 @@
         const playBtn = $("playScene");
         const selectScene = (id) => {
           sceneGrid.querySelectorAll(".scene-card").forEach((c) => c.classList.toggle("active", c.dataset.sceneId === id));
-          const src = player ? player.querySelector("source") : null;
-          if (src) { src.src = "/renders/" + id + ".mp4"; player.load(); }
+          // 直接设置 video.src(动态修改 <source> 的 src 不会触发资源重新选择)
+          if (player) player.src = "/renders/" + id + ".mp4";
         };
         sceneGrid.querySelectorAll(".scene-card").forEach((card) => {
           card.addEventListener("click", () => selectScene(card.dataset.sceneId));

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
+<head><link rel="icon" href="data:," />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Video Harness · 项目总览</title>
@@ -59,7 +59,7 @@
       <section class="other-projects" data-od-id="other-projects"><button class="project-row" type="button" data-toast="当前只连接了 1 个本地项目。"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span><strong>其他项目</strong><span>暂无其他已连接项目</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m9 18 6-6-6-6"/></svg></button></section>
     </div>
   </main>
-  <dialog class="dialog" id="videoDialog" aria-labelledby="videoTitle"><div class="dialog-header"><h2 id="videoTitle">最终成片</h2><button class="icon-btn" type="button" data-close="videoDialog" aria-label="关闭视频"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="video-frame"><video id="finalVideo" controls preload="metadata"><source src="/delivery/final.mp4" type="video/mp4" />你的浏览器暂不支持视频播放。</video></div></dialog>
+  <dialog class="dialog" id="videoDialog" aria-labelledby="videoTitle"><div class="dialog-header"><h2 id="videoTitle">最终成片</h2><button class="icon-btn" type="button" data-close="videoDialog" aria-label="关闭视频"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="video-frame"><video id="finalVideo" controls preload="none"><source src="/delivery/final.mp4" type="video/mp4" />你的浏览器暂不支持视频播放。</video></div></dialog>
   <dialog class="dialog" id="stageDialog" aria-labelledby="stageTitle"><div class="dialog-header"><h2 id="stageTitle">阶段详情</h2><button class="icon-btn" type="button" data-close="stageDialog" aria-label="关闭阶段详情"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="stage-dialog-body"><p>正常子状态默认收起；你可以在这里核对对应的技术阶段。</p><div class="tech-list" id="techList"></div><div class="dialog-actions"><button class="btn btn-secondary" type="button" data-close="stageDialog">留在总览</button><button class="btn btn-primary" type="button" id="enterWorkspace">进入工作区</button></div></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong id="toastTitle">已记录</strong><span id="toastMessage"></span></div></div>
   <script src="console-api.js"></script>
@@ -183,7 +183,7 @@
       if (videoSrc && project.delivery?.exists) {
         videoSrc.src = "/delivery/final.mp4";
         const video = $("finalVideo");
-        if (video) video.load();
+        
       }
 
       // 复制路径(真实项目根,替换旧绑定)

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
+<head><link rel="icon" href="data:," />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Video Harness · 审阅与交付</title>
@@ -82,7 +82,7 @@
     <section class="delivery-layout" data-od-id="delivery-workspace">
       <article class="surface-raised delivery-preview">
         <div class="section-head"><div><h2>成片预览</h2><p>交付文件来自演示项目的实际 assemble 产物。</p></div><span class="tag mono">final.mp4</span></div>
-        <div class="delivery-video"><video controls  preload="metadata"><source src="/delivery/final.mp4" type="video/mp4" />当前浏览器无法播放视频。</video></div>
+        <div class="delivery-video"><video controls  preload="none"><source src="/delivery/final.mp4" type="video/mp4" />当前浏览器无法播放视频。</video></div>
         <div class="delivery-toolbar"><div><strong>竖屏短视频 · H.264 + AAC</strong><span class="mono">540 × 960 · 30 FPS · 17.133 秒</span></div><div class="topbar-actions"><button class="btn btn-secondary" type="button" data-dialog-open="rebuildDialog">重新生成交付包</button><a class="btn btn-quiet" href="/delivery/final.mp4" download="video-harness-final.mp4">下载 MP4</a></div></div>
       </article>
 
@@ -138,7 +138,7 @@
         video.removeAttribute("poster");
         if (project.delivery?.exists) {
           video.src = "/delivery/final.mp4";
-          video.load();
+          
         } else {
           video.style.opacity = "0.4";
         }

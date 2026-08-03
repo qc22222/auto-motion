@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
+<head><link rel="icon" href="data:," />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Video Harness · 创作工作区</title>
@@ -117,14 +117,14 @@
           <div class="work-panel" data-work-panel="script">
             <div class="editor-split">
               <div class="list-panel"><div class="list-title"><h3>逐段文案</h3><span class="tag mono">3 段</span></div><button class="content-row active" type="button" data-script-id="line-001"><span class="row-id">01</span><div><strong>字幕这一步，不应该再靠手工反复对齐。</strong><small>开场 · scene-001</small></div><span class="mono muted">3.72s</span></button><button class="content-row" type="button" data-script-id="line-002"><span class="row-id">02</span><div><strong>确认文案进入克隆音色的 TTS，字词时间戳会同时生成。</strong><small>时间轴 · scene-002</small></div><span class="mono muted">5.02s</span></button><button class="content-row" type="button" data-script-id="line-003"><span class="row-id">03</span><div><strong>字幕、分镜和镜头时长由同一条时间轴驱动；哪里不满意，就只返工那个场景。</strong><small>局部返工 · scene-003</small></div><span class="mono muted">7.14s</span></button></div>
-              <div class="preview-panel"><div class="list-title"><h3>音色试听</h3><span class="status success">已有音频</span></div><div class="approval-banner"><strong>文案已批准</strong><span>2026-08-02 17:54 · 模拟端到端验收自动批准</span></div><audio id="scriptAudio" controls preload="metadata" src="/assets/voice/line-001.wav" style="width:100%;margin-top:24px"></audio><div class="check-list" style="margin-top:20px"><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>音色：mock-clone</strong><span>当前演示项目使用模拟音频提供者，不代表已完成真实克隆。</span></div></div><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>字词时间戳已生成</strong><span>音频元数据包含逐词起止时间，可驱动字幕。</span></div></div></div></div>
+              <div class="preview-panel"><div class="list-title"><h3>音色试听</h3><span class="status success">已有音频</span></div><div class="approval-banner"><strong>文案已批准</strong><span>2026-08-02 17:54 · 模拟端到端验收自动批准</span></div><audio id="scriptAudio" controls preload="none" src="/assets/voice/line-001.wav" style="width:100%;margin-top:24px"></audio><div class="check-list" style="margin-top:20px"><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>音色：mock-clone</strong><span>当前演示项目使用模拟音频提供者，不代表已完成真实克隆。</span></div></div><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>字词时间戳已生成</strong><span>音频元数据包含逐词起止时间，可驱动字幕。</span></div></div></div></div>
             </div>
           </div>
 
           <div class="work-panel" data-work-panel="storyboard">
             <div class="editor-split">
               <div class="list-panel"><div class="list-title"><h3>场景顺序</h3><span class="tag">按文案顺序</span></div><div class="scene-grid"><article class="scene-card active" data-scene-id="scene-001" tabindex="0"><span class="scene-thumb-placeholder" aria-hidden="true"></span><div class="scene-card-body"><strong>01 · 开场</strong><span>3.970 秒 · cut</span><span class="status success" data-scene-state>已完成</span></div></article><article class="scene-card" data-scene-id="scene-002" tabindex="0"><span class="scene-thumb-placeholder" aria-hidden="true"></span><div class="scene-card-body"><strong>02 · 同一条时间轴</strong><span>5.266 秒 · crossfade</span><span class="status success" data-scene-state>已完成</span></div></article><article class="scene-card" data-scene-id="scene-003" tabindex="0"><span class="scene-thumb-placeholder" aria-hidden="true"></span><div class="scene-card-body"><strong>03 · 只返工这一幕</strong><span>7.890 秒 · wipe</span><span class="status success" data-scene-state>已完成</span></div></article></div></div>
-              <div class="preview-panel"><div class="list-title"><h3>单场景预览</h3><button class="btn btn-secondary" type="button" id="playScene">播放 / 暂停</button></div><div class="media-preview"><video id="scenePlayer" controls  preload="metadata"><source src="/renders/scene-001.mp4" type="video/mp4" />当前浏览器无法播放视频。</video></div></div>
+              <div class="preview-panel"><div class="list-title"><h3>单场景预览</h3><button class="btn btn-secondary" type="button" id="playScene">播放 / 暂停</button></div><div class="media-preview"><video id="scenePlayer" controls  preload="none"><source src="/renders/scene-001.mp4" type="video/mp4" />当前浏览器无法播放视频。</video></div></div>
             </div>
           </div>
 
@@ -138,7 +138,7 @@
           <div class="work-panel" data-work-panel="review">
             <div class="editor-split">
               <div class="list-panel"><div class="list-title"><h3>审阅清单</h3><span class="status success">可批准</span></div><div class="check-list"><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>开场</strong><span>源文件与渲染均存在，无错误或警告。</span></div></div><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>同一条时间轴</strong><span>源文件与渲染均存在，无错误或警告。</span></div></div><div class="check-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><div><strong>只返工这一幕</strong><span>源文件与渲染均存在，无错误或警告。</span></div></div></div></div>
-              <div class="preview-panel"><div class="list-title"><h3>最终审阅预览</h3><a class="btn btn-secondary" href="delivery.html">进入交付区</a></div><div class="media-preview"><video controls  preload="metadata"><source src="/delivery/final.mp4" type="video/mp4" />当前浏览器无法播放视频。</video></div></div>
+              <div class="preview-panel"><div class="list-title"><h3>最终审阅预览</h3><a class="btn btn-secondary" href="delivery.html">进入交付区</a></div><div class="media-preview"><video controls  preload="none"><source src="/delivery/final.mp4" type="video/mp4" />当前浏览器无法播放视频。</video></div></div>
             </div>
           </div>
         </div>
