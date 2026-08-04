@@ -80,3 +80,24 @@
 - 失败隔离:单场景失败只标记自身,全部结束后统一汇总。
 - 竞态修复:并行时场景 A 完成触发的 `compileProject` 会用 inputHash 检测误标其他 running 场景 → `compile.mjs` 已跳过 running 场景。
 - 实测:3 场景 22min(串行 50min),成功率与时长校验零折扣;45 项测试全绿。
+## P2 OpenDesign 前端接线(2026-08-04 进度)
+
+- console 三页面在 `video-harness/console/`(index/workspace/delivery + console-api.js/console-ui.js/workspace-tabs.js/workspace-wiring.js + assets/workbench.css)。
+- 服务层:`server.mjs` 新增 `/console/` 静态路由(安全路径、缺失 404)、只读端点 `GET /api/project`(项目详情 + manifest.files)、`STATIC_PREFIXES` 含 `delivery/`。
+- 使用:`video-harness serve <项目> --port 4173` 后访问 `/console/index.html`。
+- 验收:持久化浏览器测试 `tests/console-browser.test.mjs`(五档宽度 1920/1440/1024/785/390;断言无溢出/SVG≤64px/恰好一个 active 面板/标签切换可见/截图哈希不同),截图存 `tests/console-shots/` 与 `console-验收截图/`。52 项测试全绿。
+- P2 四阶段:Subtask1(止血:恢复总览样式作用域迁移 + 工作区标签控制器)已完成;待做 P2-1 假数据清除(workspace.html 仍硬编码 演示标题/540×960/17.126s/2026-08-02 时间)、P2-2 写操作闭环(审批/推进/编辑 preview→apply/批注/单场景返工/单段音频)、P2-3 多项目扫描。
+- 并行化竞态已修:`compile.mjs` 跳过 running 与 failed 场景的 inputHash 检测(失败场景不被同伴完成覆盖成 stale)。
+
+## 未提交内容(2026-08-04,禁止清理/重置)
+
+- `indextts2.mjs` 有未提交修改(约 5 行):subst 输出按 GBK 解码(TextDecoder),修中文 Windows 下 subst 映射乱码误判。这是有价值的修复,保留;是否提交由用户决定。
+- 未跟踪用户素材:两张 png(ChatGPT Image 2026年8月3日 21_06_35.png、background.png)、两个参考音频 mp3(养老金…、视频创作…)、`console-验收截图/` 目录。全部保留,不提交 git(素材与验收产物)。
+
+## 新窗口视频制作验证指引(2026-08-04)
+
+- 音色已就绪:`voice-profile.json`(indextts2 + assets/reference/owner.wav,speed 1.1,情绪文本)在 demo 项目 `runs/video-demo-20260803`。
+- 场景生成已并行化:3 场景约 22min(串行 50min),`HYPERFRAMES_SCENE_CONCURRENCY` 默认 3。
+- 字幕 words 已逐词 + 简体(whisper tokens 聚合)。
+- 注意:GPU 8GiB 只能同时跑一个 IndexTTS2 推理;另一个项目(01_视频项目/2026-08-03_首发01_MG视频是什么)可能占用显存,合成前先查 nvidia-smi。
+- 入口:`tools/video-harness.ps1`(init/advance/approve/audio/captions/render/serve)。
